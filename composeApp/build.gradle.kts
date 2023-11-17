@@ -37,10 +37,14 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
 
+            // For network loading
             implementation(libs.ktor.client.okhttp)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+
+            // For network loading
+            implementation(libs.ktor.client.apache5)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
