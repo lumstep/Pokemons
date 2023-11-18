@@ -1,9 +1,7 @@
 package pokemonDetails.presentation
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
@@ -15,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
@@ -22,25 +21,28 @@ import core.imageLoading.ImageLoader
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
-private val ANIMATION_DELAY = 5.seconds
-private const val ANIMATION_DURATION = 2000
-
 @Composable
 fun PokemonImageBig(
     modifier: Modifier = Modifier,
     url: String,
     shinyUrl: String,
 ) {
+    val backgroundColor = MaterialTheme.colorScheme.inverseSurface
+
     var isShiny by remember {
         mutableStateOf(false)
     }
 
+    val alpha by animateFloatAsState(
+        targetValue = if (isShiny) 1.0f else 0.0f,
+        animationSpec = tween(4000)
+    )
+
     LaunchedEffect(isShiny) {
-        delay(ANIMATION_DELAY)
+        delay(10.seconds)
         isShiny = !isShiny
     }
 
-    val backgroundColor = MaterialTheme.colorScheme.inverseSurface
     Box(
         modifier = modifier
             .aspectRatio(1.0f)
@@ -56,12 +58,10 @@ fun PokemonImageBig(
             },
     ) {
         ImageLoader(data = url, onLoading = null)
-        AnimatedVisibility(
-            visible = isShiny,
-            enter = fadeIn(tween(ANIMATION_DURATION)),
-            exit = fadeOut(tween(ANIMATION_DURATION)),
-        ) {
-            ImageLoader(data = shinyUrl, onLoading = null)
-        }
+        ImageLoader(
+            modifier = Modifier.alpha(alpha),
+            data = shinyUrl,
+            onLoading = null,
+        )
     }
 }

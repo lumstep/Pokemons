@@ -18,7 +18,7 @@ fun PokemoneAvatarSettings(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceAround,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         OutlinedButton(
