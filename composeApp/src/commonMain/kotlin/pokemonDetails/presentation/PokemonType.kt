@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PokemonType(
     modifier: Modifier = Modifier,
-    type: String
+    type: String,
 ) {
     Row(
         modifier = modifier

@@ -1,5 +1,6 @@
 package pokemonDetails.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ fun NavigateNextButton(
         modifier = modifier
             .width(width)
             .aspectRatio(0.5f)
+            .clickable(onClick = onClick)
             .drawBehind {
                 val path = Path().apply {
                     moveTo(size.width, 0.0f)
@@ -78,6 +80,7 @@ fun NavigatePreviousButton(
         modifier = modifier
             .width(width)
             .aspectRatio(0.5f)
+            .clickable(onClick = onClick)
             .drawBehind {
                 val path = Path().apply {
                     lineTo(0f, size.height)

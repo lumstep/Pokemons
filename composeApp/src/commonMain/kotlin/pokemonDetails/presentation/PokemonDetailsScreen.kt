@@ -50,19 +50,21 @@ fun PokemonDetailsScreen(
         val pokemonInfo = remember(screenSize, state.avatar, state.shinyAvatar, state.name) {
             movableContentOf {
                 PokemonImageBig(
-                    modifier = Modifier.onSizeChanged {
-                        val heightDiff = screenSize.height - it.height
-                        if (heightDiff > 300) {
-                            pokemonDisplayingInfo = PokemonDisplayingInfo.Bottom
-                            return@onSizeChanged
+                    modifier = Modifier
+                        .onSizeChanged {
+                            val heightDiff = screenSize.height - it.height
+                            if (heightDiff > 300) {
+                                pokemonDisplayingInfo = PokemonDisplayingInfo.Bottom
+                                return@onSizeChanged
+                            }
+                            val widthDiff = screenSize.width - it.width
+                            if (widthDiff > 300) {
+                                pokemonDisplayingInfo = PokemonDisplayingInfo.End
+                                return@onSizeChanged
+                            }
+                            pokemonDisplayingInfo = PokemonDisplayingInfo.Center
                         }
-                        val widthDiff = screenSize.width - it.width
-                        if (widthDiff > 300) {
-                            pokemonDisplayingInfo = PokemonDisplayingInfo.End
-                            return@onSizeChanged
-                        }
-                        pokemonDisplayingInfo = PokemonDisplayingInfo.Center
-                    },
+                        .padding(horizontal = if (pokemonDisplayingInfo is PokemonDisplayingInfo.End) 50.dp else 0.dp),
                     url = state.avatar,
                     shinyUrl = state.shinyAvatar,
                 )
@@ -86,10 +88,12 @@ fun PokemonDetailsScreen(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    PokemonType(
-                        modifier = Modifier.padding(horizontal = 30.dp),
-                        type = state.type,
-                    )
+                    state.type?.let {
+                        PokemonType(
+                            modifier = Modifier.padding(horizontal = 30.dp),
+                            type = it,
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
