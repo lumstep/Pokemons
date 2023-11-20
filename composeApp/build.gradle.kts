@@ -69,6 +69,10 @@ kotlin {
 
             // For serialization
             implementation(libs.kotlinx.serialization)
+
+            // For pagination
+            implementation(libs.paging.compose)
+            implementation(libs.paging.common)
         }
     }
 }

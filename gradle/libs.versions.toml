@@ -17,6 +17,7 @@ junit = "4.13.2"
 kamel = "0.8.3"
 ktor-client = "2.3.6"
 serialization-version = "1.6.1"
+paging = "3.3.0-alpha02"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -46,6 +47,9 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-apache5 = { module = "io.ktor:ktor-client-apache5", version.ref = "ktor-client" }
 
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-version" }
+
+paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
+paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

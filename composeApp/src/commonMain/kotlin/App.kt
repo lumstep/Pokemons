@@ -14,6 +14,7 @@ import pokemonDetails.data.api.PokemonInfoApiImpl
 import pokemonDetails.data.repository.PokemonRepositoryImpl
 import pokemonDetails.presentation.PokemonDetailsScreen
 import pokemonDetails.presentation.mvi.PokemonDetailsViewModel
+import pokemonList.presentation.PokemonListScreen
 
 @Composable
 fun App(
@@ -24,6 +25,11 @@ fun App(
         darkTheme = darkTheme,
         dynamicColor = dynamicColor,
     ) {
+        PokemonListScreen()
+
+
+
+    /*
         val viewModel = remember {
             PokemonDetailsViewModel(
                 PokemonRepositoryImpl(
@@ -49,6 +55,6 @@ fun App(
                     state = it,
                 )
             }
-        }
+        }*/
     }
 }
