@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,7 +41,7 @@ fun PokemonType(
         Icon(
             contentDescription = null,
             tint = Color.Red,
-            imageVector = Icons.Default.Face,
+            imageVector = Icons.Default.Favorite,
         )
         Spacer(Modifier.width(16.dp))
         Text(
@@ -49,6 +49,12 @@ fun PokemonType(
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             text = type
+        )
+        Spacer(Modifier.width(16.dp))
+        Icon(
+            contentDescription = null,
+            tint = Color.Red,
+            imageVector = Icons.Default.Favorite,
         )
     }
 }

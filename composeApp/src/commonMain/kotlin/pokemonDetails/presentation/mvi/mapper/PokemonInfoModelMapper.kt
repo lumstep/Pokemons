@@ -1,13 +1,14 @@
 package pokemonDetails.presentation.mvi.mapper
 
+import core.util.capitalize
 import pokemonDetails.domain.PokemonInfoModel
 import pokemonDetails.presentation.mvi.PokemonDetailsState
 
 fun PokemonInfoModel.toPokemonDetailsState(
     avatarType: PokemonDetailsState.AvatarTypes,
 ) = PokemonDetailsState(
-    name = name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
-    type = type,
+    name = name.capitalize(),
+    type = type?.capitalize(),
     avatar = when (avatarType) {
         PokemonDetailsState.AvatarTypes.Home -> homeAvatar.orEmpty()
         PokemonDetailsState.AvatarTypes.Art -> artWorkAvatar.orEmpty()

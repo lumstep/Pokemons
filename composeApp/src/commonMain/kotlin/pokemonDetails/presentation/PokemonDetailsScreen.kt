@@ -121,23 +121,24 @@ fun PokemonDetailsScreen(
             }
         }
 
-
-        NavigateNextButton(
+        NavigateButton(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(bottom = 40.dp),
             onClick = {
                 onEvent(PokemonDetailsEvents.OnNextPressed)
             },
+            navigateButtonType = NavigateButtonType.Next,
         )
 
-        NavigatePreviousButton(
+        NavigateButton(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(bottom = 40.dp),
             onClick = {
-                onEvent(PokemonDetailsEvents.OnNextPressed)
+                onEvent(PokemonDetailsEvents.OnPreviousPressed)
             },
+            navigateButtonType = NavigateButtonType.Previous,
         )
 
         BackButton(

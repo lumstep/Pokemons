@@ -24,7 +24,7 @@ fun Characteristic(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(color = MaterialTheme.colorScheme.inverseSurface)
+            .background(color = MaterialTheme.colorScheme.secondary)
     ) {
         Column(
             modifier = Modifier.padding(all = 8.dp),
@@ -39,7 +39,7 @@ fun Characteristic(
                 text = text,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Normal,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.background,
             )
         }
     }

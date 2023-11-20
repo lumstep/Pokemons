@@ -44,7 +44,7 @@ fun App(
                 PokemonDetailsScreen(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background),
+                        .background(MaterialTheme.colorScheme.primaryContainer),
                     onEvent = viewModel::handleEvent,
                     state = it,
                 )
