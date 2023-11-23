@@ -39,7 +39,7 @@ fun PokemonImageBig(
     )
 
     LaunchedEffect(isShiny) {
-        delay(10.seconds)
+        delay(5.seconds)
         isShiny = !isShiny
     }
 

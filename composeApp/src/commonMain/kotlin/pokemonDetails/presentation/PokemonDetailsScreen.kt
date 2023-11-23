@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import core.configs.screenSizeProvider
 import pokemonDetails.presentation.mvi.PokemonDetailsEvents
 import pokemonDetails.presentation.mvi.PokemonDetailsState
+import pokemonDetails.presentation.mvi.PokemonDetailsState.AvatarTypes
 
 private sealed interface PokemonDisplayingInfo {
 
@@ -82,8 +83,13 @@ fun PokemonDetailsScreen(
 
                     PokemoneAvatarSettings(
                         modifier = Modifier.padding(horizontal = 20.dp),
-                        onArtClick = { onEvent(PokemonDetailsEvents.OnArtWorkTypePressed) },
-                        onHomeClick = { onEvent(PokemonDetailsEvents.OnHomeTypePressed) },
+                        onClick = { type ->
+                            when (type) {
+                                AvatarTypes.HOME -> onEvent(PokemonDetailsEvents.OnHomeTypePressed)
+                                AvatarTypes.ART -> onEvent(PokemonDetailsEvents.OnArtWorkTypePressed)
+                            }
+                        },
+                        selectedType = state.selectedAvatarType,
                     )
 
                     Spacer(modifier = Modifier.weight(1f))

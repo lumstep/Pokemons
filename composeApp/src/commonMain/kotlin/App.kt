@@ -7,15 +7,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.paging.ExperimentalPagingApi
+import core.configs.HttpClientKeeper
 import core.configs.InitialConfigsProvider
-import core.configs.httpClientProvider
 import core.theme.PokemonTheme
 import pokemonDetails.data.api.PokemonInfoApiImpl
 import pokemonDetails.data.repository.PokemonRepositoryImpl
 import pokemonDetails.presentation.PokemonDetailsScreen
 import pokemonDetails.presentation.mvi.PokemonDetailsViewModel
-import pokemonList.presentation.PokemonListScreen
 
+@OptIn(ExperimentalPagingApi::class)
 @Composable
 fun App(
     darkTheme: Boolean,
@@ -25,27 +26,25 @@ fun App(
         darkTheme = darkTheme,
         dynamicColor = dynamicColor,
     ) {
-        PokemonListScreen()
+        InitialConfigsProvider {
+           //  PokemonListScreen()
 
 
-
-    /*
-        val viewModel = remember {
-            PokemonDetailsViewModel(
-                PokemonRepositoryImpl(
-                    PokemonInfoApiImpl(
-                        httpClientProvider()
+            val viewModel = remember {
+                PokemonDetailsViewModel(
+                    PokemonRepositoryImpl(
+                        PokemonInfoApiImpl(
+                            HttpClientKeeper.httpClient
+                        )
                     )
                 )
-            )
-        }
-        val state by viewModel.state.collectAsState()
+            }
+            val state by viewModel.state.collectAsState()
 
-        LaunchedEffect(Unit){
-            viewModel.initPokemon(1)
-        }
+            LaunchedEffect(Unit) {
+                viewModel.initPokemon(1)
+            }
 
-        InitialConfigsProvider {
             state?.let {
                 PokemonDetailsScreen(
                     modifier = Modifier
@@ -55,6 +54,6 @@ fun App(
                     state = it,
                 )
             }
-        }*/
+        }
     }
 }

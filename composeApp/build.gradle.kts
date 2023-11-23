@@ -39,7 +39,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
 
             // For network loading
-            implementation(libs.ktor.client.okhttp)
+            implementation(libs.ktor.client.android)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -62,9 +62,8 @@ kotlin {
 
             // For network loading
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.logging)
-            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.encoding)
 
             // For serialization

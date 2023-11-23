@@ -1,6 +1,6 @@
 package pokemonDetails.domain
 
-data class PokemonInfoModel(
+data class PokemonDetailInfoModel(
     val id: Int,
     val homeAvatar: String?,
     val homeShinyAvatar: String?,

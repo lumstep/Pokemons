@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import pokemonDetails.domain.PokemonInfoModel
+import pokemonDetails.domain.PokemonDetailInfoModel
 import pokemonDetails.domain.PokemonRepository
 import pokemonDetails.presentation.mvi.PokemonDetailsState.AvatarTypes
 import pokemonDetails.presentation.mvi.mapper.toPokemonDetailsState
@@ -20,14 +20,14 @@ class PokemonDetailsViewModel(
     private val _state: MutableStateFlow<PokemonDetailsState?> = MutableStateFlow(null)
     val state = _state.asStateFlow()
 
-    private var currentPokemon: PokemonInfoModel? = null
-    private var selectedType: AvatarTypes = AvatarTypes.Home
+    private var currentPokemon: PokemonDetailInfoModel? = null
+    private var selectedType: AvatarTypes = AvatarTypes.HOME
 
     fun initPokemon(id: Int) {
         CoroutineScope(Dispatchers.Unconfined).launch {
             loadPokemon(
                 id = id,
-                type = AvatarTypes.Home,
+                type = AvatarTypes.HOME,
             )
         }
     }
@@ -58,9 +58,9 @@ class PokemonDetailsViewModel(
     fun handleEvent(event: PokemonDetailsEvents) {
         CoroutineScope(Dispatchers.Unconfined).launch {
             when (event) {
-                PokemonDetailsEvents.OnArtWorkTypePressed -> selectType(AvatarTypes.Art)
+                PokemonDetailsEvents.OnArtWorkTypePressed -> selectType(AvatarTypes.ART)
                 PokemonDetailsEvents.OnBackPressed -> {}
-                PokemonDetailsEvents.OnHomeTypePressed -> selectType(AvatarTypes.Home)
+                PokemonDetailsEvents.OnHomeTypePressed -> selectType(AvatarTypes.HOME)
                 PokemonDetailsEvents.OnNextPressed -> {
                     currentPokemon?.let { pokemon ->
                         loadPokemon(
