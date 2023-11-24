@@ -15,6 +15,7 @@ import pokemonDetails.data.api.PokemonInfoApiImpl
 import pokemonDetails.data.repository.PokemonRepositoryImpl
 import pokemonDetails.presentation.PokemonDetailsScreen
 import pokemonDetails.presentation.mvi.PokemonDetailsViewModel
+import pokemonList.presentation.PokemonListScreen
 
 @OptIn(ExperimentalPagingApi::class)
 @Composable
@@ -27,9 +28,9 @@ fun App(
         dynamicColor = dynamicColor,
     ) {
         InitialConfigsProvider {
-           //  PokemonListScreen()
+             PokemonListScreen()
 
-
+/*
             val viewModel = remember {
                 PokemonDetailsViewModel(
                     PokemonRepositoryImpl(
@@ -53,7 +54,7 @@ fun App(
                     onEvent = viewModel::handleEvent,
                     state = it,
                 )
-            }
+            }*/
         }
     }
 }

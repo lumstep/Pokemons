@@ -1,5 +1,6 @@
 package pokemonDetails.data.mapper
 
+import core.util.capitalize
 import pokemonDetails.data.dto.PokemonInfoDTO
 import pokemonDetails.domain.PokemonDetailInfoModel
 import pokemonList.domain.PokemonItemModel
@@ -19,6 +20,6 @@ fun PokemonInfoDTO.toPokemonDetailInfoModel() = PokemonDetailInfoModel(
 
 fun PokemonInfoDTO.toPokemonSmallItemModel() = PokemonItemModel(
     id = id,
-    name = name.orEmpty(),
+    name = name.orEmpty().capitalize(),
     imageUrl = sprites?.other?.home?.frontDefault.orEmpty(),
 )

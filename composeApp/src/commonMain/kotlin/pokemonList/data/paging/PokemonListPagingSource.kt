@@ -9,12 +9,6 @@ val localCache = mutableMapOf<Int, List<PokemonItemModel>>()
 //TODO The local database should be here
 class PokemonListPagingSource : PagingSource<Int, PokemonItemModel>() {
 
-    init {
-        registerInvalidatedCallback {
-            1+1+1
-        }
-    }
-
     override fun getRefreshKey(state: PagingState<Int, PokemonItemModel>): Int? {
         // Try to find the page key of the closest page to anchorPosition from
         // either the prevKey or the nextKey; you need to handle nullability

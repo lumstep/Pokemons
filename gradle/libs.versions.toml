@@ -13,6 +13,7 @@ ktor-client = "2.3.6"
 serialization-version = "1.6.1"
 paging = "3.3.0-alpha02"
 app-cash-paging = "3.3.0-alpha02-0.4.0"
+logging = "2.6.1"
 
 [libraries]
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -34,6 +35,8 @@ kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-
 
 paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
 paging-compose = { module = "app.cash.paging:paging-compose-common", version.ref = "app-cash-paging" }
+
+logging = { module = "io.github.aakira:napier", version.ref = "logging" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

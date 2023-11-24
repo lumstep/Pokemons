@@ -72,6 +72,9 @@ kotlin {
             // For pagination
             implementation(libs.paging.compose)
             implementation(libs.paging.common)
+
+            // For logging
+            implementation(libs.logging)
         }
     }
 }

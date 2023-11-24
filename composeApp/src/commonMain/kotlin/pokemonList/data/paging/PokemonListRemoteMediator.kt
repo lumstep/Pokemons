@@ -1,6 +1,7 @@
 package pokemonList.data.paging
 
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
@@ -15,56 +16,38 @@ import pokemonDetails.data.api.PokemonInfoApi
 import pokemonList.data.api.PokemonListApi
 import pokemonList.domain.PokemonItemModel
 
+private const val START_PAGE = 0
+
 @OptIn(ExperimentalPagingApi::class)
 class PokemonListRemoteMediator(
     private val pokemonListApi: PokemonListApi,
     private val pokemonInfoApi: PokemonInfoApi,
     private val pokemonListCacher: PokemonListCacher,
+    private val invalidatingPagingSourceFactory: InvalidatingPagingSourceFactory<Int, PokemonItemModel>,
 ) : RemoteMediator<Int, PokemonItemModel>() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    private var listeners = arrayListOf<() -> Unit>()
-
-    fun addListener(listener: () -> Unit) {
-        listeners.add(listener)
-    }
-
-    private fun removeListener(listener: () -> Unit) {
-        listeners.remove(listener)
-    }
-
-    private fun notifyListeners() {
-        ArrayList(listeners).forEach {
-            it()
-            removeListener(it)
-        }
+    private fun invalidate() {
+        invalidatingPagingSourceFactory.invalidate()
     }
 
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PokemonItemModel>,
     ): MediatorResult {
+
         val loadKey = when (loadType) {
-            LoadType.REFRESH -> 0
+            LoadType.REFRESH -> START_PAGE
             LoadType.PREPEND -> return MediatorResult.Success(
                 endOfPaginationReached = true
             )
 
             LoadType.APPEND -> {
-                val lastItem = state.lastItemOrNull()
-
-                // You must explicitly check if the last item is null when
-                // appending, since passing null to networkService is only
-                // valid for initial load. If lastItem is null it means no
-                // items were loaded after the initial REFRESH and there are
-                // no more items to load.
-                if (lastItem == null) {
-                    return MediatorResult.Success(
-                        endOfPaginationReached = true
-                    )
-                }
-                lastItem.id
+                val lastItem = state.lastItemOrNull() ?: return MediatorResult.Success(
+                    endOfPaginationReached = true
+                )
+                lastItem.id / state.config.pageSize
             }
         }
 
@@ -72,12 +55,10 @@ class PokemonListRemoteMediator(
             pokemonListApi.getPokemonList(
                 getUrlForPage(
                     page = loadKey,
-                    limit = 20, // TODO dont hardcore it
+                    limit = state.config.pageSize,
                 )
             )
         }
-
-
 
         return when (resource) {
             is Resource.Success -> {
@@ -94,7 +75,8 @@ class PokemonListRemoteMediator(
                     ?.filterNotNull() ?: listOf()
 
                 pokemonListCacher.cachePokemons(page = loadKey, pokemons = pokemons)
-                notifyListeners()
+                invalidate()
+
                 MediatorResult.Success(
                     endOfPaginationReached = resource.data.next.isNullOrEmpty(),
                 )

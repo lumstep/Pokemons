@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -28,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import app.cash.paging.LoadStateError
@@ -48,14 +47,13 @@ import pokemonList.data.paging.localCache
 @Composable
 fun PokemonListScreen() {
     val viewModel = remember {
-        val remoteMediator = PokemonListRemoteMediator(
-            PokemonListApiImpl(
-                HttpClientKeeper.httpClient
+        val factory = InvalidatingPagingSourceFactory {
+            PokemonListPagingSource()
+        }
 
-            ),
-            PokemonInfoApiImpl(
-                HttpClientKeeper.httpClient
-            ),
+        val remoteMediator = PokemonListRemoteMediator(
+            PokemonListApiImpl(HttpClientKeeper.httpClient),
+            PokemonInfoApiImpl(HttpClientKeeper.httpClient),
             object : PokemonListCacher {
                 override suspend fun cachePokemons(
                     page: Int,
@@ -63,16 +61,21 @@ fun PokemonListScreen() {
                 ) {
                     localCache[page] = pokemons.map { it.toPokemonSmallItemModel() }
                 }
-
-            }
+            },
+            factory
         )
+
         PokemonListViewModel(
             Pager(
-                config = PagingConfig(pageSize = 20),
+                config = PagingConfig(
+                    pageSize = 20,
+                    initialLoadSize = 60,
+                    enablePlaceholders = true,
+                    maxSize = 120,
+                ),
                 remoteMediator = remoteMediator,
-            ) {
-                PokemonListPagingSource().also { remoteMediator.addListener { it.invalidate() } }
-            }
+                pagingSourceFactory = factory,
+            )
         )
     }
 
@@ -81,26 +84,31 @@ fun PokemonListScreen() {
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .statusBarsPadding(),
+            .background(MaterialTheme.colorScheme.primaryContainer),
         columns = GridCells.Fixed(3),
     ) {
         item(span = { GridItemSpan(3) }) {
             Text(
+                modifier = Modifier.statusBarsPadding(),
                 text = "POKEMONS",
                 fontSize = 50.sp,
             )
         }
 
-        items(pokemons.itemCount) { index ->
-            val pokemon = pokemons[index]!!
-            PokemonItem(
-                url = pokemon.imageUrl,
-                name = pokemon.name,
-                color = Color.Black,
-                number = pokemon.id.toString(),
-                onClick = {},
-            )
+        items(
+            count = pokemons.itemCount,
+            key = { it },
+        ) { index ->
+            pokemons[index]?.let { pokemon ->
+                PokemonItem(
+                    modifier = Modifier.padding(all = 8.dp),
+                    url = pokemon.imageUrl,
+                    name = pokemon.name,
+                    color = Color.Black,
+                    number = pokemon.id.toString(),
+                    onClick = {},
+                )
+            }
         }
 
         pokemons.loadState.apply {
@@ -117,7 +125,7 @@ fun PokemonListScreen() {
                 }
 
                 refresh is LoadStateLoading -> {
-                    item {
+                    item(span = { GridItemSpan(3) }) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center,
@@ -130,13 +138,15 @@ fun PokemonListScreen() {
                 }
 
                 append is LoadStateLoading -> {
-                    item {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.background,
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(16.dp)
-                                .wrapContentWidth(Alignment.CenterHorizontally)
-                        )
+                    item(span = { GridItemSpan(3) }) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colorScheme.background,
+                            )
+                        }
                     }
                 }
 
@@ -144,7 +154,7 @@ fun PokemonListScreen() {
                     item {
                         ErrorItem(
                             message = "No Internet Connection.",
-                            onClickRetry = { pokemons.retry() },
+                            onClickRetry = pokemons::retry,
                             modifier = Modifier.fillMaxSize(),
                         )
                     }
@@ -154,7 +164,7 @@ fun PokemonListScreen() {
                     item(span = { GridItemSpan(3) }) {
                         ErrorItem(
                             message = "No Internet Connection",
-                            onClickRetry = { pokemons.retry() },
+                            onClickRetry = pokemons::retry,
                         )
                     }
                 }
