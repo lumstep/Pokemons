@@ -14,6 +14,7 @@ serialization-version = "1.6.1"
 paging = "3.3.0-alpha02"
 app-cash-paging = "3.3.0-alpha02-0.4.0"
 logging = "2.6.1"
+coroutines = "1.7.3"
 
 [libraries]
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -37,6 +38,9 @@ paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "p
 paging-compose = { module = "app.cash.paging:paging-compose-common", version.ref = "app-cash-paging" }
 
 logging = { module = "io.github.aakira:napier", version.ref = "logging" }
+
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

@@ -46,9 +46,15 @@ kotlin {
 
             // For network loading
             implementation(libs.ktor.client.apache5)
+
+            // For coroutines
+            implementation(libs.kotlinx.coroutines.swing)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+
+            // For coroutines
+            implementation(libs.kotlinx.coroutines.swing)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -75,6 +81,9 @@ kotlin {
 
             // For logging
             implementation(libs.logging)
+
+            // For coroutines
+            implementation(libs.kotlinx.coroutines.core)
         }
     }
 }
