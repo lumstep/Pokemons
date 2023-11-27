@@ -9,5 +9,5 @@ class PokemonListViewModel(
     private val pager: Pager<Int, PokemonItemModel>,
 ) {
 
-    fun getPopularMovies(): Flow<PagingData<PokemonItemModel>> = pager.flow
+    fun getPokemons(): Flow<PagingData<PokemonItemModel>> = pager.flow
 }

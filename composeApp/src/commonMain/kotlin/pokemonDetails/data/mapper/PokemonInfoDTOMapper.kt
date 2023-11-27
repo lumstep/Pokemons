@@ -1,9 +1,11 @@
 package pokemonDetails.data.mapper
 
+import core.util.capitalize
 import pokemonDetails.data.dto.PokemonInfoDTO
-import pokemonDetails.domain.PokemonInfoModel
+import pokemonDetails.domain.PokemonDetailInfoModel
+import pokemonList.domain.PokemonItemModel
 
-fun PokemonInfoDTO.toPokemonInfoModel() = PokemonInfoModel(
+fun PokemonInfoDTO.toPokemonDetailInfoModel() = PokemonDetailInfoModel(
     id = id,
     homeAvatar = sprites?.other?.home?.frontDefault,
     homeShinyAvatar = sprites?.other?.home?.frontShiny,
@@ -14,4 +16,10 @@ fun PokemonInfoDTO.toPokemonInfoModel() = PokemonInfoModel(
     weight = weight,
     height = height,
     experience = baseExperience,
+)
+
+fun PokemonInfoDTO.toPokemonSmallItemModel() = PokemonItemModel(
+    id = id,
+    name = name.orEmpty().capitalize(),
+    imageUrl = sprites?.other?.home?.frontDefault.orEmpty(),
 )

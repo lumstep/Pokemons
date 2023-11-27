@@ -1,9 +1,9 @@
 package pokemonList.data.api
 
-import pokemonDetails.data.dto.PokemonInfoDTO
+import pokemonList.data.dto.PokemonListPageDTO
 
 interface PokemonListApi {
 
-    suspend fun getPokemonList(url: String): PokemonInfoDTO
+    suspend fun getPokemonList(url: String): PokemonListPageDTO
 
 }

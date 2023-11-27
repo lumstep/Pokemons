@@ -9,30 +9,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import core.util.capitalize
+import pokemonDetails.presentation.mvi.PokemonDetailsState
 
 @Composable
 fun PokemoneAvatarSettings(
     modifier: Modifier = Modifier,
-    onHomeClick: () -> Unit,
-    onArtClick: () -> Unit,
+    selectedType: PokemonDetailsState.AvatarTypes,
+    onClick: (type: PokemonDetailsState.AvatarTypes) -> Unit,
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        OutlinedButton(
-            modifier = Modifier.width(100.dp),
-            onClick = onHomeClick,
-        ) {
-            Text(text = "Home")
-        }
-
-        OutlinedButton(
-            modifier = Modifier.width(100.dp),
-            onClick = onArtClick,
-        ) {
-            Text(text = "Art")
+        PokemonDetailsState.AvatarTypes.entries.forEach { type ->
+            OutlinedButton(
+                modifier = Modifier.width(100.dp),
+                enabled = selectedType != type,
+                onClick = { onClick(type) },
+            ) {
+                Text(text = type.name.capitalize())
+            }
         }
     }
 }

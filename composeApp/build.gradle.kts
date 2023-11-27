@@ -39,16 +39,22 @@ kotlin {
             implementation(libs.androidx.activity.compose)
 
             // For network loading
-            implementation(libs.ktor.client.okhttp)
+            implementation(libs.ktor.client.android)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
 
             // For network loading
             implementation(libs.ktor.client.apache5)
+
+            // For coroutines
+            implementation(libs.kotlinx.coroutines.swing)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+
+            // For coroutines
+            implementation(libs.kotlinx.coroutines.swing)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -62,9 +68,8 @@ kotlin {
 
             // For network loading
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.logging)
-            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.encoding)
 
             // For serialization
@@ -73,6 +78,12 @@ kotlin {
             // For pagination
             implementation(libs.paging.compose)
             implementation(libs.paging.common)
+
+            // For logging
+            implementation(libs.logging)
+
+            // For coroutines
+            implementation(libs.kotlinx.coroutines.core)
         }
     }
 }
