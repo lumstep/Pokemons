@@ -17,7 +17,6 @@ import pokemonDetails.presentation.PokemonDetailsScreen
 import pokemonDetails.presentation.mvi.PokemonDetailsViewModel
 import pokemonList.presentation.PokemonListScreen
 
-@OptIn(ExperimentalPagingApi::class)
 @Composable
 fun App(
     darkTheme: Boolean,
@@ -30,31 +29,7 @@ fun App(
         InitialConfigsProvider {
              PokemonListScreen()
 
-/*
-            val viewModel = remember {
-                PokemonDetailsViewModel(
-                    PokemonRepositoryImpl(
-                        PokemonInfoApiImpl(
-                            HttpClientKeeper.httpClient
-                        )
-                    )
-                )
-            }
-            val state by viewModel.state.collectAsState()
 
-            LaunchedEffect(Unit) {
-                viewModel.initPokemon(1)
-            }
-
-            state?.let {
-                PokemonDetailsScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    onEvent = viewModel::handleEvent,
-                    state = it,
-                )
-            }*/
         }
     }
 }

@@ -84,6 +84,10 @@ kotlin {
 
             // For coroutines
             implementation(libs.kotlinx.coroutines.core)
+
+            // For compose navigation
+            implementation(libs.appyx.navigation)
+            api(libs.appyx.backstack)  // Use api, not implementation according to the appyx documentation
         }
     }
 }

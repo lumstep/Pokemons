@@ -1,20 +1,21 @@
 [versions]
 compose = "1.5.4"
-compose-plugin = "1.5.10"
+compose-plugin = "1.5.11"
 compose-compiler = "1.5.4"
 agp = "8.1.4"
 android-minSdk = "24"
 android-compileSdk = "34"
 android-targetSdk = "34"
 androidx-activityCompose = "1.8.1"
-kotlin = "1.9.20"
-kamel = "0.8.3"
+kotlin = "1.9.21"
+kamel = "0.9.0"
 ktor-client = "2.3.6"
 serialization-version = "1.6.1"
 paging = "3.3.0-alpha02"
 app-cash-paging = "3.3.0-alpha02-0.4.0"
 logging = "2.6.1"
 coroutines = "1.7.3"
+appyx = "2.0.0-alpha09"
 
 [libraries]
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -41,6 +42,9 @@ logging = { module = "io.github.aakira:napier", version.ref = "logging" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
+
+appyx-navigation = { module = "com.bumble.appyx:appyx-navigation", version.ref = "appyx" }
+appyx-backstack = { module = "com.bumble.appyx:backstack", version.ref = "appyx" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

@@ -24,6 +24,7 @@ class PokemonDetailsViewModel(
     private var selectedType: AvatarTypes = AvatarTypes.HOME
 
     fun initPokemon(id: Int) {
+        if (currentPokemon != null) return
         CoroutineScope(Dispatchers.Unconfined).launch {
             loadPokemon(
                 id = id,
