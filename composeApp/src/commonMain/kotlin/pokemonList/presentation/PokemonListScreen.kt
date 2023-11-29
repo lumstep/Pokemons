@@ -45,7 +45,10 @@ import pokemonList.data.paging.localCache
 
 @OptIn(ExperimentalPagingApi::class)
 @Composable
-fun PokemonListScreen() {
+fun PokemonListScreen(
+    modifier: Modifier = Modifier,
+    onItemClick: (pokemonId: Int) -> Unit, // TODO it's not MVI pattern
+) {
     val viewModel = remember {
         val factory = InvalidatingPagingSourceFactory {
             PokemonListPagingSource()
@@ -82,7 +85,7 @@ fun PokemonListScreen() {
     val pokemons = viewModel.getPokemons().collectAsLazyPagingItems()
 
     LazyVerticalGrid(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer),
         columns = GridCells.Fixed(3),
@@ -106,7 +109,7 @@ fun PokemonListScreen() {
                     name = pokemon.name,
                     color = Color.Black,
                     number = pokemon.id.toString(),
-                    onClick = {},
+                    onClick = { onItemClick(pokemon.id) },
                 )
             }
         }
