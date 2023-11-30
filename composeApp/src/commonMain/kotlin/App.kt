@@ -1,35 +1,25 @@
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.paging.ExperimentalPagingApi
-import core.configs.HttpClientKeeper
+import com.bumble.appyx.navigation.integration.NodeFactory
+import com.bumble.appyx.navigation.node.Node
 import core.configs.InitialConfigsProvider
+import core.configs.PokemonParentNode
 import core.theme.PokemonTheme
-import pokemonDetails.data.api.PokemonInfoApiImpl
-import pokemonDetails.data.repository.PokemonRepositoryImpl
-import pokemonDetails.presentation.PokemonDetailsScreen
-import pokemonDetails.presentation.mvi.PokemonDetailsViewModel
-import pokemonList.presentation.PokemonListScreen
+import pokemonList.presentation.PokemonListNode
 
 @Composable
 fun App(
     darkTheme: Boolean,
     dynamicColor: Boolean,
+    nodeHostProvider: @Composable (factory: NodeFactory<in Node>) -> Unit,
 ) {
     PokemonTheme(
         darkTheme = darkTheme,
         dynamicColor = dynamicColor,
     ) {
         InitialConfigsProvider {
-             PokemonListScreen()
-
-
+            nodeHostProvider {
+                PokemonParentNode(buildContext = it)
+            }
         }
     }
 }

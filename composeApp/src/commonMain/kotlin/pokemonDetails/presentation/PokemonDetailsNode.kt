@@ -12,12 +12,15 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import core.configs.HttpClientKeeper
+import kotlinx.coroutines.flow.collectLatest
 import pokemonDetails.data.api.PokemonInfoApiImpl
 import pokemonDetails.data.repository.PokemonRepositoryImpl
+import pokemonDetails.presentation.mvi.PokemonDetailsEffects
 import pokemonDetails.presentation.mvi.PokemonDetailsViewModel
 
 class PokemonDetailsNode(
     private val pokemonId: Int,
+    private val navigateBack: () -> Unit,
     buildContext: BuildContext,
 ) : Node(buildContext = buildContext) {
 
@@ -37,6 +40,12 @@ class PokemonDetailsNode(
 
         LaunchedEffect(Unit) {
             viewModel.initPokemon(id = pokemonId)
+
+            viewModel.effects.collectLatest { effect ->
+                when (effect) {
+                    PokemonDetailsEffects.NavigateBack -> navigateBack()
+                }
+            }
         }
 
         state?.let {
