@@ -34,7 +34,7 @@ ktor-client-apache5 = { module = "io.ktor:ktor-client-apache5", version.ref = "k
 
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-version" }
 
-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
+paging-common = { module = "app.cash.paging:paging-common", version.ref = "app-cash-paging" }
 paging-compose = { module = "app.cash.paging:paging-compose-common", version.ref = "app-cash-paging" }
 
 logging = { module = "io.github.aakira:napier", version.ref = "logging" }
