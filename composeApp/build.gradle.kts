@@ -55,7 +55,7 @@ kotlin {
             implementation(libs.ktor.client.darwin)
 
             // For coroutines
-            implementation(libs.kotlinx.coroutines.swing)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
