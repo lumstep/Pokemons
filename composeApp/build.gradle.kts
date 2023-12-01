@@ -41,6 +41,9 @@ kotlin {
 
             // For network loading
             implementation(libs.ktor.client.android)
+
+            // For dependency injection
+            implementation(libs.koin.android)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -89,6 +92,9 @@ kotlin {
             // For compose navigation
             implementation(libs.appyx.navigation)
             api(libs.appyx.backstack)  // Use api, not implementation according to the appyx documentation
+
+            // For dependency injection
+            implementation(libs.koin.core)
         }
     }
 }

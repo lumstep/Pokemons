@@ -2,7 +2,7 @@
 compose = "1.5.4"
 compose-plugin = "1.5.11"
 compose-compiler = "1.5.4"
-agp = "8.1.4"
+agp = "8.2.0"
 android-minSdk = "24"
 android-compileSdk = "34"
 android-targetSdk = "34"
@@ -16,6 +16,7 @@ app-cash-paging = "3.3.0-alpha02-0.4.0"
 logging = "2.6.1"
 coroutines = "1.7.3"
 appyx = "2.0.0-alpha09"
+koin = "3.5.0"
 
 [libraries]
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -45,6 +46,9 @@ kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 
 appyx-navigation = { module = "com.bumble.appyx:appyx-navigation", version.ref = "appyx" }
 appyx-backstack = { module = "com.bumble.appyx:backstack", version.ref = "appyx" }
+
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
