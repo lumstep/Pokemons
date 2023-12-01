@@ -8,6 +8,5 @@ import pokemonList.domain.PokemonItemModel
 class PokemonListViewModel(
     private val pager: Pager<Int, PokemonItemModel>,
 ) {
-
     fun getPokemons(): Flow<PagingData<PokemonItemModel>> = pager.flow
 }

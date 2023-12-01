@@ -3,6 +3,7 @@ package pokemonList.presentation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import app.cash.paging.compose.collectAsLazyPagingItems
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
@@ -15,7 +16,9 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
+import org.koin.core.component.KoinComponent
 import pokemonDetails.presentation.PokemonDetailsNode
+import pokemonList.di.PokemonListScope
 
 class PokemonListNode(
     buildContext: BuildContext,
@@ -29,7 +32,10 @@ class PokemonListNode(
 ) : ParentNode<PokemonListNode.NavTarget>(
     buildContext = buildContext,
     appyxComponent = backStack,
-) {
+), KoinComponent {
+
+    private val scope = PokemonListScope().scope
+    private val viewModel: PokemonListViewModel by scope.inject()
 
     sealed class NavTarget : Parcelable {
         @Parcelize
@@ -48,9 +54,12 @@ class PokemonListNode(
             )
 
             is NavTarget.PokemonList -> node(buildContext = buildContext) {
-                PokemonListScreen(onItemClick = { pokemonId ->
-                    backStack.push(NavTarget.PokemonDetails(pokemonId = pokemonId))
-                })
+                PokemonListScreen(
+                    pokemons = viewModel.getPokemons().collectAsLazyPagingItems(),
+                    onItemClick = { pokemonId ->
+                        backStack.push(NavTarget.PokemonDetails(pokemonId = pokemonId))
+                    },
+                )
             }
         }
 

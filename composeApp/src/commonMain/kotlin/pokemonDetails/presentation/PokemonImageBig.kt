@@ -35,11 +35,11 @@ fun PokemonImageBig(
 
     val alpha by animateFloatAsState(
         targetValue = if (isShiny) 1.0f else 0.0f,
-        animationSpec = tween(4000)
+        animationSpec = tween(2000)
     )
 
     LaunchedEffect(isShiny) {
-        delay(5.seconds)
+        delay(3.seconds)
         isShiny = !isShiny
     }
 

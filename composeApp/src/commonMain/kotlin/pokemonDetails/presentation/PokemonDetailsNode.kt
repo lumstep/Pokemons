@@ -7,14 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
-import core.configs.HttpClientKeeper
 import kotlinx.coroutines.flow.collectLatest
-import pokemonDetails.data.api.PokemonInfoApiImpl
-import pokemonDetails.data.repository.PokemonRepositoryImpl
+import org.koin.core.component.KoinComponent
+import pokemonDetails.di.PokemonDetailsScope
 import pokemonDetails.presentation.mvi.PokemonDetailsEffects
 import pokemonDetails.presentation.mvi.PokemonDetailsViewModel
 
@@ -22,20 +20,14 @@ class PokemonDetailsNode(
     private val pokemonId: Int,
     private val navigateBack: () -> Unit,
     buildContext: BuildContext,
-) : Node(buildContext = buildContext) {
+) : Node(buildContext = buildContext), KoinComponent {
+
+    private val scope = PokemonDetailsScope().scope
+    private val viewModel: PokemonDetailsViewModel by scope.inject()
 
     @Composable
     override fun View(modifier: Modifier) {
 
-        val viewModel = remember {
-            PokemonDetailsViewModel(
-                PokemonRepositoryImpl(
-                    PokemonInfoApiImpl(
-                        HttpClientKeeper.httpClient
-                    )
-                )
-            )
-        }
         val state by viewModel.state.collectAsState()
 
         LaunchedEffect(Unit) {
