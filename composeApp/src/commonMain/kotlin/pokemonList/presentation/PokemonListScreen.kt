@@ -19,71 +19,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.InvalidatingPagingSourceFactory
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.LoadStateNotLoading
-import app.cash.paging.compose.collectAsLazyPagingItems
-import core.configs.HttpClientKeeper
-import pokemonDetails.data.api.PokemonInfoApiImpl
-import pokemonDetails.data.dto.PokemonInfoDTO
-import pokemonDetails.data.mapper.toPokemonSmallItemModel
-import pokemonList.data.api.PokemonListApiImpl
-import pokemonList.data.paging.PokemonListCacher
-import pokemonList.data.paging.PokemonListPagingSource
-import pokemonList.data.paging.PokemonListRemoteMediator
-import pokemonList.data.paging.localCache
+import app.cash.paging.compose.LazyPagingItems
+import pokemonList.domain.PokemonItemModel
 
-@OptIn(ExperimentalPagingApi::class)
 @Composable
 fun PokemonListScreen(
     modifier: Modifier = Modifier,
+    pokemons: LazyPagingItems<PokemonItemModel>,
     onItemClick: (pokemonId: Int) -> Unit, // TODO it's not MVI pattern
 ) {
-    val viewModel = remember {
-        val factory = InvalidatingPagingSourceFactory {
-            PokemonListPagingSource()
-        }
-
-        val remoteMediator = PokemonListRemoteMediator(
-            PokemonListApiImpl(HttpClientKeeper.httpClient),
-            PokemonInfoApiImpl(HttpClientKeeper.httpClient),
-            object : PokemonListCacher {
-                override suspend fun cachePokemons(
-                    page: Int,
-                    pokemons: List<PokemonInfoDTO>
-                ) {
-                    localCache[page] = pokemons.map { it.toPokemonSmallItemModel() }
-                }
-            },
-            factory
-        )
-
-        PokemonListViewModel(
-            Pager(
-                config = PagingConfig(
-                    pageSize = 20,
-                    initialLoadSize = 60,
-                    enablePlaceholders = true,
-                    maxSize = 120,
-                ),
-                remoteMediator = remoteMediator,
-                pagingSourceFactory = factory,
-            )
-        )
-    }
-
-    val pokemons = viewModel.getPokemons().collectAsLazyPagingItems()
-
     LazyVerticalGrid(
         modifier = modifier
             .fillMaxSize()
@@ -184,7 +137,7 @@ fun PokemonListScreen(
 private fun ErrorItem(
     message: String,
     modifier: Modifier = Modifier,
-    onClickRetry: () -> Unit
+    onClickRetry: () -> Unit,
 ) {
     Row(
         modifier = modifier.padding(16.dp),

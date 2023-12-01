@@ -11,19 +11,21 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
 val htpClientModule = module {
-    @Suppress("DEPRECATION")
-    httpClientProvider {
-        install(DefaultRequest) {
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-        }
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    ignoreUnknownKeys = true
-                    prettyPrint = true
-                    isLenient = true
-                }
-            )
+    single {
+        @Suppress("DEPRECATION")
+        httpClientProvider {
+            install(DefaultRequest) {
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+            }
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                        prettyPrint = true
+                        isLenient = true
+                    }
+                )
+            }
         }
     }
 }
