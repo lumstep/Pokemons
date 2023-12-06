@@ -1,24 +1,31 @@
 import androidx.compose.runtime.Composable
-import com.bumble.appyx.navigation.integration.NodeFactory
-import com.bumble.appyx.navigation.node.Node
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import core.configs.InitialConfigsProvider
-import core.configs.PokemonParentNode
+import core.configs.PokemonRootComponent
 import core.theme.PokemonTheme
-import pokemonList.presentation.PokemonListNode
 
 @Composable
 fun App(
     darkTheme: Boolean,
     dynamicColor: Boolean,
-    nodeHostProvider: @Composable (factory: NodeFactory<in Node>) -> Unit,
+    root: PokemonRootComponent,
 ) {
     PokemonTheme(
         darkTheme = darkTheme,
         dynamicColor = dynamicColor,
     ) {
         InitialConfigsProvider {
-            nodeHostProvider {
-                PokemonParentNode(buildContext = it)
+            val childStack by root.childStack.subscribeAsState()
+            Children(
+                stack = childStack,
+                animation = stackAnimation(slide())
+            ) { child ->
+                child.instance.View(Modifier)
             }
         }
     }

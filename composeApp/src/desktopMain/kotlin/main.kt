@@ -1,77 +1,41 @@
-import androidx.compose.runtime.remember
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.bumble.appyx.navigation.integration.DesktopNodeHost
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.jetbrains.lifecycle.LifecycleController
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import core.configs.PokemonRootComponent
 import core.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import org.koin.core.context.startKoin
 
-sealed class Events {
-    object OnBackPressed : Events()
-}
-
+@OptIn(ExperimentalDecomposeApi::class)
 fun main() {
     Napier.base(DebugAntilog())
 
     initKoin()
 
+    val lifecycle = LifecycleRegistry()
+    val root = PokemonRootComponent(DefaultComponentContext(lifecycle))
+
     application {
 
-        val events: Channel<Events> = Channel()
         val windowState = rememberWindowState(size = DpSize(480.dp, 640.dp))
-        val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
+        LifecycleController(lifecycle, windowState)
 
         Window(
             title = "Pokemons",
             state = windowState,
             onCloseRequest = ::exitApplication,
-            onKeyEvent = {
-                // See back handling section in the docs below!
-                onKeyEvent(it, events, eventScope)
-            },
         ) {
             App(
                 darkTheme = true,
                 dynamicColor = false,
-            ) { factory ->
-                DesktopNodeHost(
-                    windowState = windowState,
-                    onBackPressedEvents = events.receiveAsFlow().mapNotNull {
-                        if (it is Events.OnBackPressed) Unit else null
-                    },
-                    factory = factory,
-                )
-            }
+                root = root,
+            )
         }
     }
 }
-
-private fun onKeyEvent(
-    keyEvent: KeyEvent,
-    events: Channel<Events>,
-    coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-): Boolean =
-    when {
-        keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.Backspace -> {
-            coroutineScope.launch { events.send(Events.OnBackPressed) }
-            true
-        }
-
-        else -> false
-    }

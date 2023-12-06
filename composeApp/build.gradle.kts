@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.serialization)
-    alias(libs.plugins.parcelize)
 }
 
 kotlin {
@@ -90,8 +89,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
 
             // For compose navigation
-            implementation(libs.appyx.navigation)
-            api(libs.appyx.backstack)  // Use api, not implementation according to the appyx documentation
+            implementation(libs.decompose)
+            implementation(libs.decompose.jetbrains)
 
             // For dependency injection
             implementation(libs.koin.core)

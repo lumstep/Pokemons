@@ -15,8 +15,9 @@ paging = "3.3.0-alpha02"
 app-cash-paging = "3.3.0-alpha02-0.4.0"
 logging = "2.6.1"
 coroutines = "1.7.3"
-appyx = "2.0.0-alpha09"
 koin = "3.5.0"
+decompose = "2.2.0"
+extensionsComposeJetbrains = "2.1.4-compose-experimental"
 
 [libraries]
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -44,8 +45,8 @@ logging = { module = "io.github.aakira:napier", version.ref = "logging" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 
-appyx-navigation = { module = "com.bumble.appyx:appyx-navigation", version.ref = "appyx" }
-appyx-backstack = { module = "com.bumble.appyx:backstack", version.ref = "appyx" }
+decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-jetbrains = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "extensionsComposeJetbrains" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -56,4 +57,3 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
