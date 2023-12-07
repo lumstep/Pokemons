@@ -6,6 +6,16 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.sqldelight)
+}
+
+sqldelight {
+    databases {
+        create("PokemonsDatabase") {
+            packageName.set("org.lumstep")
+            generateAsync.set(true)
+        }
+    }
 }
 
 kotlin {
@@ -43,6 +53,9 @@ kotlin {
 
             // For dependency injection
             implementation(libs.koin.android)
+
+            // For database
+            implementation(libs.sqldelight.android.driver)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -52,12 +65,19 @@ kotlin {
 
             // For coroutines
             implementation(libs.kotlinx.coroutines.swing)
+
+            // For database
+            implementation(libs.sqldelight.sqlite.driver)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
 
-            // For coroutines
-
+            // For database
+            implementation(libs.sqldelight.native.driver)
+        }
+        jsMain.dependencies {
+            // For database
+            implementation(libs.sqldelight.sqljs.driver)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

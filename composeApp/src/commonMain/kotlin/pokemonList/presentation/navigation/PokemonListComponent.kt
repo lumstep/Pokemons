@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.cash.paging.compose.collectAsLazyPagingItems
 import com.arkivanov.decompose.ComponentContext
-import core.configs.PokemonRootComponent
+import core.ui.navigation.PokemonRootComponent
 import org.koin.core.component.KoinComponent
 import pokemonList.di.PokemonListScope
 import pokemonList.presentation.PokemonListScreen

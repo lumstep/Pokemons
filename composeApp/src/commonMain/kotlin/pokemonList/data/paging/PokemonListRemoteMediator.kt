@@ -7,11 +7,11 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import core.domain.Resource
 import core.domain.tryGetData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import io.github.aakira.napier.Napier
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 import pokemonDetails.data.api.PokemonInfoApi
 import pokemonList.data.api.PokemonListApi
 import pokemonList.domain.PokemonItemModel
@@ -24,11 +24,11 @@ class PokemonListRemoteMediator(
     private val pokemonInfoApi: PokemonInfoApi,
     private val pokemonListCacher: PokemonListCacher,
     private val invalidatingPagingSourceFactory: InvalidatingPagingSourceFactory<Int, PokemonItemModel>,
+    private val dispatcher: CoroutineDispatcher,
 ) : RemoteMediator<Int, PokemonItemModel>() {
 
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
-
     private fun invalidate() {
+        Napier.d { "invalidate" }
         invalidatingPagingSourceFactory.invalidate()
     }
 
@@ -38,12 +38,22 @@ class PokemonListRemoteMediator(
     ): MediatorResult {
 
         val loadKey = when (loadType) {
-            LoadType.REFRESH -> START_PAGE
-            LoadType.PREPEND -> return MediatorResult.Success(
-                endOfPaginationReached = true
-            )
+            LoadType.REFRESH -> {
+                Napier.d { "LoadType.REFRESH" }
+                START_PAGE
+            }
+
+            LoadType.PREPEND -> {
+                Napier.d { "LoadType.PREPEND" }
+
+                return MediatorResult.Success(
+                    endOfPaginationReached = true
+                )
+            }
 
             LoadType.APPEND -> {
+                Napier.d { "LoadType.APPEND" }
+
                 val lastItem = state.lastItemOrNull() ?: return MediatorResult.Success(
                     endOfPaginationReached = true
                 )
@@ -51,28 +61,36 @@ class PokemonListRemoteMediator(
             }
         }
 
-        val resource = tryGetData {
-            pokemonListApi.getPokemonList(
-                getUrlForPage(
-                    page = loadKey,
-                    limit = state.config.pageSize,
+        Napier.d { "loadKey $loadKey" }
+
+        val resource = withContext(dispatcher) {
+            tryGetData {
+                pokemonListApi.getPokemonList(
+                    getUrlForPage(
+                        page = loadKey,
+                        limit = state.config.pageSize,
+                    )
                 )
-            )
+            }
         }
 
         return when (resource) {
             is Resource.Success -> {
                 val pokemons = resource.data.results
                     ?.map {
-                        coroutineScope.async {
-                            val pokemonInfoResource = tryGetData {
-                                pokemonInfoApi.getPokemonInfo(it?.url.orEmpty())
+                        withContext(dispatcher) {
+                            async {
+                                val pokemonInfoResource = tryGetData {
+                                    pokemonInfoApi.getPokemonInfo(it?.url.orEmpty())
+                                }
+                                (pokemonInfoResource as? Resource.Success)?.data
                             }
-                            (pokemonInfoResource as? Resource.Success)?.data
                         }
                     }
                     ?.awaitAll()
                     ?.filterNotNull() ?: listOf()
+
+                Napier.d { "Load from network size - ${pokemons.size}, first id - ${pokemons.firstOrNull()?.id}" }
 
                 pokemonListCacher.cachePokemons(page = loadKey, pokemons = pokemons)
                 invalidate()
@@ -83,6 +101,10 @@ class PokemonListRemoteMediator(
             }
 
             is Resource.Error -> {
+                Napier.d(
+                    message = "error when loading from network",
+                    throwable = resource.exception,
+                )
                 MediatorResult.Error(resource.exception)
             }
         }

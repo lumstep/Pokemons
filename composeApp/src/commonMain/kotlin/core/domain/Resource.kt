@@ -20,3 +20,10 @@ suspend fun <T> tryGetData(tryGetData: suspend () -> T): Resource<T> {
         Resource.Error(exception = exception)
     }
 }
+
+suspend fun <T> Resource<T>.tryIfError(onError: suspend () -> T): Resource<T> {
+    return when (this) {
+        is Resource.Error -> tryGetData { onError() }
+        is Resource.Success -> this
+    }
+}

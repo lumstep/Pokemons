@@ -1,4 +1,4 @@
-package core.theme
+package core.ui.theme
 
 import android.os.Build
 import androidx.compose.material3.MaterialTheme
@@ -6,9 +6,9 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import core.style.DarkColorScheme
-import core.style.LightColorScheme
-import core.style.PokemonTypography
+import core.ui.style.DarkColorScheme
+import core.ui.style.LightColorScheme
+import core.ui.style.PokemonTypography
 
 @Composable
 actual fun PokemonTheme(

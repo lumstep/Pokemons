@@ -9,7 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
-import core.configs.PokemonRootComponent
+import core.ui.navigation.PokemonRootComponent
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.component.KoinComponent
 import pokemonDetails.di.PokemonDetailsScope
