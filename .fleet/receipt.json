@@ -17,6 +17,11 @@
                 "ui": [
                     "compose"
                 ]
+            },
+            "web": {
+                "ui": [
+                    "compose"
+                ]
             }
         }
     },

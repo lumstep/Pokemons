@@ -18,7 +18,7 @@ fun ImageLoader(
     contentScale: ContentScale = ContentScale.Fit,
     contentDescription: String? = null,
     colorFilter: ColorFilter? = null,
-    alpha: Float = DefaultAlpha,
+    alpha: Float = 1f,
     onLoading: @Composable (BoxScope.(Float) -> Unit)? = {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.Center)

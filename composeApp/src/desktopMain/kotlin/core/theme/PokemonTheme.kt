@@ -6,7 +6,6 @@ import core.style.DarkColorScheme
 import core.style.LightColorScheme
 import core.style.PokemonTypography
 
-
 @Composable
 actual fun PokemonTheme(
     darkTheme: Boolean,
