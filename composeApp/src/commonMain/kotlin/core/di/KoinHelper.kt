@@ -8,7 +8,7 @@ import pokemonList.di.pokemonListModules
 fun initKoin(init: KoinApplication.() -> Unit = {}) {
     startKoin {
         init()
-        modules(htpClientModule)
+        modules(htpClientModule, databaseModule)
         pokemonListModules
         pokemonDetailsModules
     }

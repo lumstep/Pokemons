@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.retainedComponent
-import core.configs.PokemonRootComponent
+import core.ui.navigation.PokemonRootComponent
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 

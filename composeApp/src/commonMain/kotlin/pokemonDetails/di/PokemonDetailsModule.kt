@@ -1,5 +1,7 @@
 package pokemonDetails.di
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import org.koin.core.KoinApplication
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -14,7 +16,7 @@ val KoinApplication.pokemonDetailsModules: KoinApplication
 
 private val dataModule = module {
     scope<PokemonDetailsScope> {
-        scoped { PokemonRepositoryImpl(get()) } bind PokemonRepository::class
+        scoped { PokemonRepositoryImpl(get(), get (), Dispatchers.IO) } bind PokemonRepository::class
         scoped { PokemonInfoApiImpl(get()) } bind PokemonInfoApi::class
     }
 }

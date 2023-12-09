@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
-import core.imageLoading.ImageLoader
+import core.ui.imageLoading.ImageLoader
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 

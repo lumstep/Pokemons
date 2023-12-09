@@ -3,13 +3,11 @@ package pokemonDetails.presentation.mvi
 import core.domain.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import pokemonDetails.domain.PokemonDetailInfoModel
 import pokemonDetails.domain.PokemonRepository
 import pokemonDetails.presentation.mvi.PokemonDetailsState.AvatarTypes
@@ -65,14 +63,12 @@ class PokemonDetailsViewModel(
         id: Int,
         type: AvatarTypes,
     ) {
-        withContext(Dispatchers.IO) {
-            when (val resource = pokemonRepository.getPokemonInfo(id)) {
-                is Resource.Error -> {}
-                is Resource.Success -> {
-                    currentPokemon = resource.data
-                    selectedType = type
-                    _state.emit(resource.data.toPokemonDetailsState(type))
-                }
+        when (val resource = pokemonRepository.getPokemonInfo(id)) {
+            is Resource.Error -> {}
+            is Resource.Success -> {
+                currentPokemon = resource.data
+                selectedType = type
+                _state.emit(resource.data.toPokemonDetailsState(type))
             }
         }
     }
