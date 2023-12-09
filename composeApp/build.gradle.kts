@@ -56,6 +56,9 @@ kotlin {
 
             // For database
             implementation(libs.sqldelight.android.driver)
+
+            // For lottie
+            implementation(libs.lottie)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -74,10 +77,6 @@ kotlin {
 
             // For database
             implementation(libs.sqldelight.native.driver)
-        }
-        jsMain.dependencies {
-            // For database
-            implementation(libs.sqldelight.sqljs.driver)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
