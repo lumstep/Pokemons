@@ -4,6 +4,7 @@ import core.domain.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -20,15 +21,30 @@ class PokemonDetailsViewModel(
     private val _effects: Channel<PokemonDetailsEffects> = Channel()
     val effects = _effects.receiveAsFlow()
 
-    private val _state: MutableStateFlow<PokemonDetailsState?> = MutableStateFlow(null)
+    private val _state: MutableStateFlow<PokemonDetailsState> = MutableStateFlow(
+        PokemonDetailsState(
+            isLoading = true,
+            name = "",
+            type = null,
+            weight = "",
+            height = "",
+            experience = "",
+            selectedAvatarType = AvatarTypes.HOME,
+            avatar = "",
+            shinyAvatar = "",
+        )
+    )
     val state = _state.asStateFlow()
 
     private var currentPokemon: PokemonDetailInfoModel? = null
     private var selectedType: AvatarTypes = AvatarTypes.HOME
 
+    // TODO fix that
+    private val viewModelScope = CoroutineScope(Dispatchers.Unconfined)
+
     fun initPokemon(id: Int) {
         if (currentPokemon != null) return
-        CoroutineScope(Dispatchers.Unconfined).launch {
+        viewModelScope.launch {
             loadPokemon(
                 id = id,
                 type = AvatarTypes.HOME,
@@ -37,7 +53,7 @@ class PokemonDetailsViewModel(
     }
 
     fun handleEvent(event: PokemonDetailsEvents) {
-        CoroutineScope(Dispatchers.Unconfined).launch {
+        viewModelScope.launch {
             when (event) {
                 PokemonDetailsEvents.OnArtWorkTypePressed -> selectType(AvatarTypes.ART)
                 PokemonDetailsEvents.OnBackPressed -> _effects.send(PokemonDetailsEffects.NavigateBack)
@@ -63,8 +79,36 @@ class PokemonDetailsViewModel(
         id: Int,
         type: AvatarTypes,
     ) {
+        _state.emit(
+            PokemonDetailsState(
+                name = "",
+                type = null,
+                weight = "",
+                height = "",
+                experience = "",
+                selectedAvatarType = type,
+                avatar = "",
+                shinyAvatar = "",
+                isLoading = true,
+            )
+        )
+
+        delay(5000L)
+
         when (val resource = pokemonRepository.getPokemonInfo(id)) {
-            is Resource.Error -> {}
+            is Resource.Error -> {
+                _effects.send(
+                    PokemonDetailsEffects.Error(
+                        message = resource.message ?: "Exception",
+                        retry = {
+                            viewModelScope.launch {
+                                loadPokemon(id, type)
+                            }
+                        },
+                    )
+                )
+            }
+
             is Resource.Success -> {
                 currentPokemon = resource.data
                 selectedType = type
@@ -76,7 +120,20 @@ class PokemonDetailsViewModel(
     private suspend fun selectType(
         type: AvatarTypes,
     ) {
-        _state.emit(currentPokemon?.toPokemonDetailsState(type)) //TODO don't map again
+        currentPokemon?.let { pokemon ->
+            _state.emit(
+                _state.value.copy(
+                    avatar = when (type) {
+                        AvatarTypes.HOME -> pokemon.homeAvatar.orEmpty()
+                        AvatarTypes.ART -> pokemon.artWorkAvatar.orEmpty()
+                    },
+                    shinyAvatar = when (type) {
+                        AvatarTypes.HOME -> pokemon.homeShinyAvatar.orEmpty()
+                        AvatarTypes.ART -> pokemon.artWorkShinyAvatar.orEmpty()
+                    },
+                )
+            )
+        }
         selectedType = type
     }
 }
