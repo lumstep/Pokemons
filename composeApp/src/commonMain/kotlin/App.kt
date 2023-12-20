@@ -1,6 +1,7 @@
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
@@ -11,13 +12,13 @@ import core.ui.theme.PokemonTheme
 
 @Composable
 fun App(
-    darkTheme: Boolean,
-    dynamicColor: Boolean,
+    seedColor: Color,
+    useDarkTheme: Boolean,
     root: PokemonRootComponent,
 ) {
     PokemonTheme(
-        darkTheme = darkTheme,
-        dynamicColor = dynamicColor,
+        seedColor = seedColor,
+        useDarkTheme = useDarkTheme,
     ) {
         InitialConfigsProvider {
             val childStack by root.childStack.subscribeAsState()

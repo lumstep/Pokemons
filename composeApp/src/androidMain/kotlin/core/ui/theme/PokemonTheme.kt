@@ -9,9 +9,9 @@ import androidx.compose.ui.platform.LocalContext
 import core.ui.style.DarkColorScheme
 import core.ui.style.LightColorScheme
 import core.ui.style.PokemonTypography
-
+/*
 @Composable
-actual fun PokemonTheme(
+fun PokemonTheme(
     darkTheme: Boolean,
     dynamicColor: Boolean,
     content: @Composable () -> Unit
@@ -31,4 +31,4 @@ actual fun PokemonTheme(
         typography = PokemonTypography,
         content = content
     )
-}
+}*/

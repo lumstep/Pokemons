@@ -4,6 +4,7 @@ import androidx.compose.ui.window.ComposeUIViewController
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import core.ui.navigation.PokemonRootComponent
+import core.ui.style.GreenPrimaryLight
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import platform.UIKit.UIScreen
@@ -18,13 +19,13 @@ fun MainViewController() = ComposeUIViewController {
         PokemonRootComponent(DefaultComponentContext(LifecycleRegistry()))
     }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         Napier.base(DebugAntilog())
     }
 
     App(
-        darkTheme = isDarkTheme,
-        dynamicColor = false,
+        useDarkTheme = isDarkTheme,
+        seedColor = GreenPrimaryLight,
         root = root,
     )
 }

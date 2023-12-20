@@ -5,17 +5,17 @@ import androidx.compose.runtime.Composable
 import core.ui.style.DarkColorScheme
 import core.ui.style.LightColorScheme
 import core.ui.style.PokemonTypography
-
+/*
 
 @Composable
-actual fun PokemonTheme(
+fun PokemonTheme(
     darkTheme: Boolean,
     dynamicColor: Boolean,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = if(darkTheme) DarkColorScheme else LightColorScheme,
+        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
         typography = PokemonTypography,
         content = content
     )
-}
+}*/

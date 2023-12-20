@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import pokemonDetails.domain.PokemonDetailInfoModel
 import pokemonDetails.domain.PokemonRepository
 import pokemonDetails.presentation.mvi.PokemonDetailsState.AvatarTypes
@@ -92,8 +93,6 @@ class PokemonDetailsViewModel(
                 isLoading = true,
             )
         )
-
-        delay(5000L)
 
         when (val resource = pokemonRepository.getPokemonInfo(id)) {
             is Resource.Error -> {

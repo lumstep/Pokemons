@@ -8,7 +8,7 @@ import core.ui.style.PokemonTypography
 
 
 @Composable
-actual fun PokemonTheme(
+fun PokemonTheme(
     darkTheme: Boolean,
     dynamicColor: Boolean,
     content: @Composable () -> Unit

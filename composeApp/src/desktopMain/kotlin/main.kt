@@ -9,6 +9,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.lifecycle.LifecycleC
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import core.di.initKoin
 import core.ui.navigation.PokemonRootComponent
+import core.ui.style.GreenPrimaryLight
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -35,8 +36,8 @@ fun main() {
             onCloseRequest = ::exitApplication,
         ) {
             App(
-                darkTheme = true,
-                dynamicColor = false,
+                seedColor = GreenPrimaryLight,
+                useDarkTheme = false,
                 root = root,
             )
         }

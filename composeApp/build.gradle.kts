@@ -113,6 +113,9 @@ kotlin {
 
             // For dependency injection
             implementation(libs.koin.core)
+
+            // For dynamic theme
+            implementation(libs.materialKolor)
         }
     }
 }
