@@ -10,7 +10,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
-actual fun LottieAnimationLoader(modifier: Modifier, json: String) {
+fun LottieAnimationLoader(modifier: Modifier = Modifier, json: String) {
     val composition by rememberLottieComposition(LottieCompositionSpec.JsonString(json))
     val progress by animateLottieCompositionAsState(
         composition,

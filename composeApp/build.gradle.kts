@@ -71,6 +71,9 @@ kotlin {
 
             // For database
             implementation(libs.sqldelight.sqlite.driver)
+
+            // For gif support
+            implementation(libs.animatedImage)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

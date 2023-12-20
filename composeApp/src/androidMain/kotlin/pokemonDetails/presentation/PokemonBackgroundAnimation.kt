@@ -13,13 +13,11 @@ import org.jetbrains.compose.resources.resource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun PokemonSparks(
-    modifier: Modifier = Modifier,
-) {
+actual fun PokemonBackgroundAnimation(modifier: Modifier) {
     var text: String? by remember { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
-        text = resource("fire.json").readBytes().decodeToString()
+        text = resource("winter.json").readBytes().decodeToString()
     }
 
     text?.let {

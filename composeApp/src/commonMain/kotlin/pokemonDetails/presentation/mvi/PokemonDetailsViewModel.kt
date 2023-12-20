@@ -4,7 +4,6 @@ import core.domain.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -92,8 +91,6 @@ class PokemonDetailsViewModel(
                 isLoading = true,
             )
         )
-
-        delay(5000L)
 
         when (val resource = pokemonRepository.getPokemonInfo(id)) {
             is Resource.Error -> {
