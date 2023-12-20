@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
@@ -50,72 +52,83 @@ fun PokemonDetailsScreen(
 
             val screenSize = screenSizeProvider()
 
-            val pokemonInfo = remember(screenSize, state.avatar, state.shinyAvatar, state.name) {
-                movableContentOf {
-                    PokemonImageBig(
-                        modifier = Modifier
-                            .onSizeChanged {
-                                val heightDiff = screenSize.height - it.height
-                                if (heightDiff > 300) {
-                                    pokemonDisplayingInfo = PokemonDisplayingInfo.Bottom
-                                    return@onSizeChanged
-                                }
-                                val widthDiff = screenSize.width - it.width
-                                if (widthDiff > 300) {
-                                    pokemonDisplayingInfo = PokemonDisplayingInfo.End
-                                    return@onSizeChanged
-                                }
-                                pokemonDisplayingInfo = PokemonDisplayingInfo.Center
-                            }
-                            .padding(horizontal = if (pokemonDisplayingInfo is PokemonDisplayingInfo.End) 50.dp else 0.dp),
-                        url = state.avatar,
-                        shinyUrl = state.shinyAvatar,
-                    )
-
-                    Column(
-                        modifier = Modifier
-                            .padding(top = if (pokemonDisplayingInfo is PokemonDisplayingInfo.End) 40.dp else 0.dp)
-                            .align(if (pokemonDisplayingInfo is PokemonDisplayingInfo.End) Alignment.CenterEnd else Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        PokemonName(
-                            modifier = Modifier.padding(horizontal = 20.dp),
-                            name = state.name,
-                        )
-
-                        PokemoneAvatarSettings(
-                            modifier = Modifier.padding(horizontal = 20.dp),
-                            onClick = { type ->
-                                when (type) {
-                                    AvatarTypes.HOME -> onEvent(PokemonDetailsEvents.OnHomeTypePressed)
-                                    AvatarTypes.ART -> onEvent(PokemonDetailsEvents.OnArtWorkTypePressed)
-                                }
-                            },
-                            selectedType = state.selectedAvatarType,
-                        )
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        state.type?.let {
-                            PokemonType(
-                                modifier = Modifier.padding(horizontal = 30.dp),
-                                type = it,
+            val pokemonInfo =
+                remember(screenSize, state.avatar, state.shinyAvatar, state.name, state.isLoading) {
+                    movableContentOf {
+                        Box {
+                            PokemonImageBig(
+                                modifier = Modifier
+                                    .onSizeChanged {
+                                        val heightDiff = screenSize.height - it.height
+                                        if (heightDiff > 300) {
+                                            pokemonDisplayingInfo = PokemonDisplayingInfo.Bottom
+                                            return@onSizeChanged
+                                        }
+                                        val widthDiff = screenSize.width - it.width
+                                        if (widthDiff > 300) {
+                                            pokemonDisplayingInfo = PokemonDisplayingInfo.End
+                                            return@onSizeChanged
+                                        }
+                                        pokemonDisplayingInfo = PokemonDisplayingInfo.Center
+                                    }
+                                    .padding(horizontal = if (pokemonDisplayingInfo is PokemonDisplayingInfo.End) 50.dp else 0.dp),
+                                url = state.avatar,
+                                shinyUrl = state.shinyAvatar,
                             )
+
+                            if (state.isLoading) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .size(60.dp)
+                                )
+                            }
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        PokemonCharacteristics(
+                        Column(
                             modifier = Modifier
-                                .padding(horizontal = 30.dp)
-                                .padding(bottom = 16.dp),
-                            weight = state.weight,
-                            height = state.height,
-                            experience = state.experience,
-                        )
+                                .padding(top = if (pokemonDisplayingInfo is PokemonDisplayingInfo.End) 40.dp else 0.dp)
+                                .align(if (pokemonDisplayingInfo is PokemonDisplayingInfo.End) Alignment.CenterEnd else Alignment.Center),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            PokemonName(
+                                modifier = Modifier.padding(horizontal = 20.dp),
+                                name = state.name,
+                            )
+
+                            PokemoneAvatarSettings(
+                                modifier = Modifier.padding(horizontal = 20.dp),
+                                onClick = { type ->
+                                    when (type) {
+                                        AvatarTypes.HOME -> onEvent(PokemonDetailsEvents.OnHomeTypePressed)
+                                        AvatarTypes.ART -> onEvent(PokemonDetailsEvents.OnArtWorkTypePressed)
+                                    }
+                                },
+                                selectedType = state.selectedAvatarType,
+                            )
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            state.type?.let {
+                                PokemonType(
+                                    modifier = Modifier.padding(horizontal = 30.dp),
+                                    type = it,
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            PokemonCharacteristics(
+                                modifier = Modifier
+                                    .padding(horizontal = 30.dp)
+                                    .padding(bottom = 16.dp),
+                                weight = state.weight,
+                                height = state.height,
+                                experience = state.experience,
+                            )
+                        }
                     }
                 }
-            }
 
             when (pokemonDisplayingInfo) {
                 PokemonDisplayingInfo.Bottom -> Column(

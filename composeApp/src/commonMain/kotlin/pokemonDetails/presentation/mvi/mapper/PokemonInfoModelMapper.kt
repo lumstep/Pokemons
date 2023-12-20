@@ -21,4 +21,5 @@ fun PokemonDetailInfoModel.toPokemonDetailsState(
     height = height?.toString() ?: "N/A",
     experience = experience?.toString() ?: "N/A",
     selectedAvatarType = avatarType,
+    isLoading = false,
 )
