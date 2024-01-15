@@ -93,8 +93,6 @@ class PokemonDetailsViewModel(
             )
         )
 
-        delay(5000L)
-
         when (val resource = pokemonRepository.getPokemonInfo(id)) {
             is Resource.Error -> {
                 _effects.send(
