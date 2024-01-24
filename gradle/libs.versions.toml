@@ -19,6 +19,7 @@ decompose = "2.2.2"
 extensionsComposeJetbrains = "2.2.2-compose-experimental"
 sqldelight = "2.0.1"
 lottie = "6.2.0"
+viewmodel = "0.6.1"
 
 [libraries]
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -58,6 +59,9 @@ sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", versi
 sqldelight-sqljs-driver = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqldelight" }
 
 lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+
+viewmodel = { module = "io.github.hoc081098:kmp-viewmodel", version.ref = "viewmodel" }
+viewmodel-compose = { module = "io.github.hoc081098:kmp-viewmodel-compose", version.ref = "viewmodel" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

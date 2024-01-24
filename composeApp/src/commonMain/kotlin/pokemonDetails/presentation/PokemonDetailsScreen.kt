@@ -38,7 +38,7 @@ private sealed interface PokemonDisplayingInfo {
 fun PokemonDetailsScreen(
     modifier: Modifier = Modifier,
     state: PokemonDetailsState,
-    onEvent: (PokemonDetailsEvents) -> Unit,
+    sendEvent: (PokemonDetailsEvents) -> Unit,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Box(
@@ -100,8 +100,8 @@ fun PokemonDetailsScreen(
                                 modifier = Modifier.padding(horizontal = 20.dp),
                                 onClick = { type ->
                                     when (type) {
-                                        AvatarTypes.HOME -> onEvent(PokemonDetailsEvents.OnHomeTypePressed)
-                                        AvatarTypes.ART -> onEvent(PokemonDetailsEvents.OnArtWorkTypePressed)
+                                        AvatarTypes.HOME -> sendEvent(PokemonDetailsEvents.OnHomeTypePressed)
+                                        AvatarTypes.ART -> sendEvent(PokemonDetailsEvents.OnArtWorkTypePressed)
                                     }
                                 },
                                 selectedType = state.selectedAvatarType,
@@ -147,7 +147,7 @@ fun PokemonDetailsScreen(
                     .align(Alignment.BottomEnd)
                     .padding(bottom = 40.dp),
                 onClick = {
-                    onEvent(PokemonDetailsEvents.OnNextPressed)
+                    sendEvent(PokemonDetailsEvents.OnNextPressed)
                 },
                 navigateButtonType = NavigateButtonType.Next,
             )
@@ -157,7 +157,7 @@ fun PokemonDetailsScreen(
                     .align(Alignment.BottomStart)
                     .padding(bottom = 40.dp),
                 onClick = {
-                    onEvent(PokemonDetailsEvents.OnPreviousPressed)
+                    sendEvent(PokemonDetailsEvents.OnPreviousPressed)
                 },
                 navigateButtonType = NavigateButtonType.Previous,
             )
@@ -168,7 +168,7 @@ fun PokemonDetailsScreen(
                     .align(Alignment.TopStart)
                     .padding(all = 16.dp),
                 onClick = {
-                    onEvent(PokemonDetailsEvents.OnBackPressed)
+                    sendEvent(PokemonDetailsEvents.OnBackPressed)
                 },
             )
         }

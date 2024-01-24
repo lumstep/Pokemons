@@ -1,16 +1,7 @@
 package pokemonList.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,18 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.paging.ExperimentalPagingApi
 import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.LoadStateNotLoading
 import app.cash.paging.compose.LazyPagingItems
 import pokemonList.domain.PokemonItemModel
+import pokemonList.presentation.mvi.PokemonListEvents
 
 @Composable
 fun PokemonListScreen(
     modifier: Modifier = Modifier,
     pokemons: LazyPagingItems<PokemonItemModel>,
-    onItemClick: (pokemonId: Int) -> Unit, // TODO it's not MVI pattern
+    sendEvent: (PokemonListEvents) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = modifier
@@ -62,7 +53,7 @@ fun PokemonListScreen(
                     name = pokemon.name,
                     color = Color.Black,
                     number = pokemon.id.toString(),
-                    onClick = { onItemClick(pokemon.id) },
+                    onClick = { sendEvent(PokemonListEvents.OnPokemonClick(pokemonId = pokemon.id)) },
                 )
             }
         }

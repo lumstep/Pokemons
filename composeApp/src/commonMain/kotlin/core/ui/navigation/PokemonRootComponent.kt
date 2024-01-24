@@ -39,7 +39,7 @@ class PokemonRootComponent(
 
             is Configuration.PokemonList -> PokemonListComponent(
                 componentContext = context,
-                onNavigateToPokemonDetails = { pokemonId: Int ->
+                navigateToPokemonDetails = { pokemonId: Int ->
                     navigation.pushNew(Configuration.PokemonDetails(pokemonId = pokemonId))
                 },
             )
