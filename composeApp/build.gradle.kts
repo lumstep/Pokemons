@@ -139,6 +139,12 @@ kotlin {
         jsMain.dependencies {
             // For network loading
             implementation(libs.ktor.client.js)
+
+            // For database
+            implementation(libs.sqldelight.sqljs.driver)
+            implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+
+            
         }
     }
 }

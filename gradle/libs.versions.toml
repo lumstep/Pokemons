@@ -57,7 +57,7 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
-sqldelight-sqljs-driver = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqldelight" }
+sqldelight-sqljs-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "sqldelight" }
 
 lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
