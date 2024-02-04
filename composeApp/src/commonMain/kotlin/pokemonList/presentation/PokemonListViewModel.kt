@@ -1,7 +1,7 @@
 package pokemonList.presentation
 
-import androidx.paging.Pager
-import androidx.paging.PagingData
+import app.cash.paging.Pager
+import app.cash.paging.PagingData
 import com.hoc081098.kmp.viewmodel.ViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
