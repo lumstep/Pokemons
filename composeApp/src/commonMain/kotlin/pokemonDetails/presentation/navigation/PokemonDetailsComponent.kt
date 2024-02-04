@@ -2,20 +2,13 @@ package pokemonDetails.presentation.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
-import core.ui.snackbar.ErrorSnackbarHost
 import core.ui.navigation.PokemonRootComponent
+import core.ui.snackbar.ErrorSnackbarHost
+import core.ui.viewModel.koinKmpViewModel
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.component.KoinComponent
@@ -30,11 +23,10 @@ class PokemonDetailsComponent(
     private val navigateBack: () -> Unit,
 ) : ComponentContext by componentContext, KoinComponent, PokemonRootComponent.Child {
 
-    private val scope = PokemonDetailsScope().scope
-    private val viewModel: PokemonDetailsViewModel by scope.inject()
-
     @Composable
     override fun View(modifier: Modifier) {
+
+        val viewModel: PokemonDetailsViewModel = koinKmpViewModel { PokemonDetailsScope() }
 
         val state by viewModel.state.collectAsState()
         val snackbarHostState = remember { SnackbarHostState() }
@@ -70,7 +62,7 @@ class PokemonDetailsComponent(
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.primaryContainer),
-                onEvent = viewModel::handleEvent,
+                sendEvent = viewModel::handleEvent,
                 state = state,
             )
         }

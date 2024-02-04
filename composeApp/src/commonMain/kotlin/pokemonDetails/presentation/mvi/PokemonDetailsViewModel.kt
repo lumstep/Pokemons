@@ -1,10 +1,8 @@
 package pokemonDetails.presentation.mvi
 
+import com.hoc081098.kmp.viewmodel.ViewModel
 import core.domain.Resource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -16,7 +14,7 @@ import pokemonDetails.presentation.mvi.mapper.toPokemonDetailsState
 
 class PokemonDetailsViewModel(
     private val pokemonRepository: PokemonRepository,
-) {
+) : ViewModel(){
 
     private val _effects: Channel<PokemonDetailsEffects> = Channel()
     val effects = _effects.receiveAsFlow()
@@ -38,9 +36,6 @@ class PokemonDetailsViewModel(
 
     private var currentPokemon: PokemonDetailInfoModel? = null
     private var selectedType: AvatarTypes = AvatarTypes.HOME
-
-    // TODO fix that
-    private val viewModelScope = CoroutineScope(Dispatchers.Unconfined)
 
     fun initPokemon(id: Int) {
         if (currentPokemon != null) return

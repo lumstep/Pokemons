@@ -14,7 +14,7 @@ class PokemonListCacherImpl(
 ) : PokemonListCacher {
     override suspend fun cachePokemons(page: Int, pokemons: List<PokemonInfoDTO>) {
         withContext(dispatcher) {
-            Napier.d { "cachePokemons page - $page, size - ${pokemons.size}, first id - ${pokemons.firstOrNull()?.id}" }
+            Napier.e { "cachePokemons page - $page, size - ${pokemons.size}, first id - ${pokemons.firstOrNull()?.id}" }
             pokemons.map { pokemonDTO ->
                 launch {
                     with(pokemonDTO) {

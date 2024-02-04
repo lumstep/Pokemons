@@ -1,8 +1,8 @@
 [versions]
-compose = "1.5.4"
-compose-plugin = "1.6.0-alpha01"
+compose = "1.6.0"
+compose-plugin = "1.6.0-dev1405"
 compose-compiler = "1.5.8"
-agp = "8.2.1"
+agp = "8.2.2"
 android-minSdk = "24"
 android-compileSdk = "34"
 android-targetSdk = "34"
@@ -12,13 +12,14 @@ kamel = "0.9.1"
 ktor-client = "2.3.7"
 serialization-version = "1.6.2"
 app-cash-paging = "3.3.0-alpha02-0.4.0"
-logging = "2.6.1"
+logging = "2.7.1"
 coroutines = "1.7.3"
 koin = "3.5.3"
 decompose = "2.2.2"
 extensionsComposeJetbrains = "2.2.2-compose-experimental"
 sqldelight = "2.0.1"
 lottie = "6.2.0"
+viewmodel = "0.6.1"
 
 [libraries]
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -58,6 +59,9 @@ sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", versi
 sqldelight-sqljs-driver = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqldelight" }
 
 lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+
+viewmodel = { module = "io.github.hoc081098:kmp-viewmodel", version.ref = "viewmodel" }
+viewmodel-compose = { module = "io.github.hoc081098:kmp-viewmodel-compose", version.ref = "viewmodel" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
