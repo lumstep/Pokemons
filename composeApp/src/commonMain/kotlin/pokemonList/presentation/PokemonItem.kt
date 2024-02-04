@@ -41,7 +41,7 @@ fun PokemonItem(
                 .background(color)
                 .fillMaxWidth()
                 .aspectRatio(1.0f),
-            data = url,
+            url = url,
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(

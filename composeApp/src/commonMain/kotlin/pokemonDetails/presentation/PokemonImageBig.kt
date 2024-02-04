@@ -60,15 +60,15 @@ fun PokemonImageBig(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
                 .aspectRatio(1.0f),
-            data = url,
-            onLoading = null
+            url = url,
+            onLoading = null,
         )
         ImageLoader(
             modifier = Modifier
                 .alpha(alpha)
                 .padding(horizontal = 20.dp)
                 .aspectRatio(1.0f),
-            data = shinyUrl,
+            url = shinyUrl,
             onLoading = null,
         )
     }

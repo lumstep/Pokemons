@@ -92,7 +92,8 @@ kotlin {
             implementation(compose.components.resources)
 
             // For loading images
-            implementation(libs.kamel.image)
+            implementation(libs.coil3.compose)
+            implementation(libs.coil3.network.ktor)
 
             // For network loading
             implementation(libs.ktor.client.core)
