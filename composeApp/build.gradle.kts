@@ -1,5 +1,3 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
@@ -20,14 +18,8 @@ sqldelight {
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
+    js {
+        browser()
         binaries.executable()
     }
 
@@ -80,6 +72,9 @@ kotlin {
 
             // For lottie
             implementation(libs.lottie)
+
+            // For loading images
+            implementation(libs.kamel.image)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -92,6 +87,9 @@ kotlin {
 
             // For database
             implementation(libs.sqldelight.sqlite.driver)
+
+            // For loading images
+            implementation(libs.kamel.image)
         }
         iosMain.dependencies {
             // For network loading
@@ -99,6 +97,9 @@ kotlin {
 
             // For database
             implementation(libs.sqldelight.native.driver)
+
+            // For loading images
+            implementation(libs.kamel.image)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -106,9 +107,6 @@ kotlin {
             implementation(compose.material3)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
-
-            // For loading images
-            implementation(libs.kamel.image)
 
             // For network loading
             implementation(libs.ktor.client.core)
@@ -144,6 +142,9 @@ kotlin {
              */
             api(libs.viewmodel)
             api(libs.viewmodel.compose)
+        }
+        jsMain.dependencies {
+            implementation(libs.ktor.client.js)
         }
     }
 }

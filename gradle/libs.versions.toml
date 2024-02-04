@@ -7,10 +7,7 @@ android-minSdk = "24"
 android-compileSdk = "34"
 android-targetSdk = "34"
 androidx-activityCompose = "1.8.2"
-kotlin = "1.9.21"
-kamel = "0.9.0"
-ktor-client = "2.3.6"
-serialization-version = "1.6.1"
+kotlin = "1.9.22"
 kamel = "0.9.1"
 ktor-client = "2.3.7"
 serialization-version = "1.6.2"
@@ -18,8 +15,7 @@ app-cash-paging = "3.3.0-alpha02-0.4.0"
 logging = "2.7.1"
 coroutines = "1.7.3"
 koin = "3.5.3"
-decompose = "2.2.2"
-extensionsComposeJetbrains = "2.2.2-compose-experimental"
+decompose = "2.2.2-compose-experimental"
 sqldelight = "2.0.1"
 lottie = "6.2.0"
 viewmodel = "0.6.1"
@@ -39,6 +35,7 @@ ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "k
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-client" }
 ktor-client-apache5 = { module = "io.ktor:ktor-client-apache5", version.ref = "ktor-client" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor-client" }
 
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-version" }
 
@@ -51,7 +48,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-decompose-jetbrains = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "extensionsComposeJetbrains" }
+decompose-jetbrains = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }

@@ -6,10 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
+
 
 @Composable
 fun ImageLoader(
@@ -26,7 +24,7 @@ fun ImageLoader(
     },
     onFailure: @Composable (BoxScope.(Throwable) -> Unit)? = null,
 ) {
-    KamelImage(
+   /* KamelImage(
         modifier = modifier,
         resource = asyncPainterResource(data),
         contentDescription = contentDescription,
@@ -35,5 +33,5 @@ fun ImageLoader(
         onFailure = onFailure,
         alpha = alpha,
         contentScale = contentScale,
-    )
+    )*/
 }
