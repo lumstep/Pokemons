@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
@@ -72,9 +70,6 @@ kotlin {
 
             // For lottie
             implementation(libs.lottie)
-
-            // For loading images
-            implementation(libs.kamel.image)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -87,9 +82,6 @@ kotlin {
 
             // For database
             implementation(libs.sqldelight.sqlite.driver)
-
-            // For loading images
-            implementation(libs.kamel.image)
         }
         iosMain.dependencies {
             // For network loading
@@ -97,9 +89,6 @@ kotlin {
 
             // For database
             implementation(libs.sqldelight.native.driver)
-
-            // For loading images
-            implementation(libs.kamel.image)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -107,6 +96,10 @@ kotlin {
             implementation(compose.material3)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+
+            // For loading images
+            implementation(libs.coil3.compose)
+            implementation(libs.coil3.network.ktor)
 
             // For network loading
             implementation(libs.ktor.client.core)

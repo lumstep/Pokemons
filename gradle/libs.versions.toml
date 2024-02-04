@@ -8,7 +8,7 @@ android-compileSdk = "34"
 android-targetSdk = "34"
 androidx-activityCompose = "1.8.2"
 kotlin = "1.9.22"
-kamel = "0.9.1"
+coil3 = "3.0.0-alpha04"
 ktor-client = "2.3.7"
 serialization-version = "1.6.2"
 app-cash-paging = "3.3.0-alpha02-0.4.0"
@@ -26,7 +26,8 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 
-kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel" }
+coil3-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
+coil3-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor", version.ref = "coil3" }
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
