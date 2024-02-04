@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.cash.paging.LoadStateError
@@ -21,6 +22,11 @@ import app.cash.paging.LoadStateNotLoading
 import app.cash.paging.compose.LazyPagingItems
 import pokemonList.domain.PokemonItemModel
 import pokemonList.presentation.mvi.PokemonListEvents
+
+private sealed interface PokemonListContentType {
+    object Title : PokemonListContentType
+    object Pokemon : PokemonListContentType
+}
 
 @Composable
 fun PokemonListScreen(
@@ -34,9 +40,13 @@ fun PokemonListScreen(
             .background(MaterialTheme.colorScheme.primaryContainer),
         columns = GridCells.Fixed(3),
     ) {
-        item(span = { GridItemSpan(3) }) {
+        item(
+            span = { GridItemSpan(3) },
+            contentType = { PokemonListContentType.Title },
+        ) {
             Text(
-                modifier = Modifier.statusBarsPadding(),
+                modifier = Modifier.statusBarsPadding().fillMaxWidth(),
+                textAlign = TextAlign.Center,
                 text = "POKEMONS",
                 fontSize = 50.sp,
             )
@@ -45,6 +55,7 @@ fun PokemonListScreen(
         items(
             count = pokemons.itemCount,
             key = { it },
+            contentType = { PokemonListContentType.Pokemon },
         ) { index ->
             pokemons[index]?.let { pokemon ->
                 PokemonItem(

@@ -30,7 +30,7 @@ fun main() {
 
         Window(
             title = "Pokemons",
-            icon = painterResource("pokemon_launcher.png"),
+            //icon = painterResource(Res.im),
             state = windowState,
             onCloseRequest = ::exitApplication,
         ) {

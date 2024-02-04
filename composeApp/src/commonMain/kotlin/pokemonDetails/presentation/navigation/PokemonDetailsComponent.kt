@@ -6,10 +6,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
-import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
-import com.hoc081098.kmp.viewmodel.viewModelFactory
 import core.ui.navigation.PokemonRootComponent
 import core.ui.snackbar.ErrorSnackbarHost
+import core.ui.viewModel.koinKmpViewModel
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.component.KoinComponent
@@ -24,27 +23,10 @@ class PokemonDetailsComponent(
     private val navigateBack: () -> Unit,
 ) : ComponentContext by componentContext, KoinComponent, PokemonRootComponent.Child {
 
-    init {
-        Napier.d { "init PokemonDetailsComponent" }
-    }
-
-    private val scope = PokemonDetailsScope().scope
-
     @Composable
     override fun View(modifier: Modifier) {
 
-        val viewModel: PokemonDetailsViewModel = kmpViewModel(
-            factory = viewModelFactory {
-                Napier.d { "viewModelFactory PokemonDetailsViewModel" }
-
-                scope.get<PokemonDetailsViewModel>().apply {
-                    addCloseable {
-                        Napier.d { "onCleared PokemonDetailsViewModel" }
-                        scope.close()
-                    }
-                }
-            },
-        )
+        val viewModel: PokemonDetailsViewModel = koinKmpViewModel { PokemonDetailsScope() }
 
         val state by viewModel.state.collectAsState()
         val snackbarHostState = remember { SnackbarHostState() }

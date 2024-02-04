@@ -1,10 +1,6 @@
 package pokemonList.data.paging
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.InvalidatingPagingSourceFactory
-import androidx.paging.LoadType
-import androidx.paging.PagingState
-import androidx.paging.RemoteMediator
+import androidx.paging.*
 import core.domain.Resource
 import core.domain.tryGetData
 import io.github.aakira.napier.Napier
@@ -28,7 +24,7 @@ class PokemonListRemoteMediator(
 ) : RemoteMediator<Int, PokemonItemModel>() {
 
     private fun invalidate() {
-        Napier.d { "invalidate" }
+        Napier.e { "invalidate" }
         invalidatingPagingSourceFactory.invalidate()
     }
 
@@ -39,29 +35,31 @@ class PokemonListRemoteMediator(
 
         val loadKey = when (loadType) {
             LoadType.REFRESH -> {
-                Napier.d { "LoadType.REFRESH" }
+                Napier.e { "LoadType.REFRESH" }
                 START_PAGE
             }
 
             LoadType.PREPEND -> {
-                Napier.d { "LoadType.PREPEND" }
+                Napier.e { "LoadType.PREPEND" }
 
                 return MediatorResult.Success(
-                    endOfPaginationReached = true
+                    endOfPaginationReached = false
                 )
             }
 
             LoadType.APPEND -> {
-                Napier.d { "LoadType.APPEND" }
+                Napier.e { "LoadType.APPEND" }
 
                 val lastItem = state.lastItemOrNull() ?: return MediatorResult.Success(
                     endOfPaginationReached = true
-                )
+                ).also {
+                    Napier.e { "LoadType.APPEND MediatorResult.Success endOfPaginationReached = true" }
+                }
                 lastItem.id / state.config.pageSize
             }
         }
 
-        Napier.d { "loadKey $loadKey" }
+        Napier.e { "loadKey $loadKey" }
 
         val resource = withContext(dispatcher) {
             tryGetData {
@@ -90,10 +88,12 @@ class PokemonListRemoteMediator(
                     ?.awaitAll()
                     ?.filterNotNull() ?: listOf()
 
-                Napier.d { "Load from network size - ${pokemons.size}, first id - ${pokemons.firstOrNull()?.id}" }
+                Napier.e { "Load from network size - ${pokemons.size}, first id - ${pokemons.firstOrNull()?.id}" }
 
                 pokemonListCacher.cachePokemons(page = loadKey, pokemons = pokemons)
                 invalidate()
+
+                Napier.e { "MediatorResult.Success ${resource.data.next.isNullOrEmpty()}" }
 
                 MediatorResult.Success(
                     endOfPaginationReached = resource.data.next.isNullOrEmpty(),
@@ -101,7 +101,7 @@ class PokemonListRemoteMediator(
             }
 
             is Resource.Error -> {
-                Napier.d(
+                Napier.e(
                     message = "error when loading from network",
                     throwable = resource.exception,
                 )

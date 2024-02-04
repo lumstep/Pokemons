@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import core.ui.lottie.LottieAnimationLoader
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.resource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -19,7 +18,7 @@ fun PokemonSparks(
     var text: String? by remember { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
-        text = resource("fire.json").readBytes().decodeToString()
+      //  text = resource("fire.json").readBytes().decodeToString()
     }
 
     text?.let {

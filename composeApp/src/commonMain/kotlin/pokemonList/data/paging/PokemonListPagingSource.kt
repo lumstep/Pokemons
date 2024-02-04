@@ -18,21 +18,24 @@ class PokemonListPagingSource(
 ) : PagingSource<Int, PokemonItemModel>() {
 
     init {
-        Napier.d { "Init new paging source" }
+        Napier.e { "Init new paging source" }
+        registerInvalidatedCallback {
+            Napier.e { "invalidate paging source" }
+        }
     }
 
     override fun getRefreshKey(state: PagingState<Int, PokemonItemModel>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
-        }.also {
-            Napier.d { "refresh key - $it" }
+        Napier.e { " get refresh key - $state" }
+        val lastPage = state.pages.lastOrNull()
+        val key = lastPage?.nextKey ?: lastPage?.prevKey?.let { it + 2 } ?: 0
+        return key.also {
+            Napier.e { "refresh key - $it" }
         }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonItemModel> {
         val nextPageNumber = params.key ?: 0
-        Napier.d { "nextPageNumber - $nextPageNumber" }
+        Napier.e { "nextPageNumber - $nextPageNumber" }
 
         return withContext(dispatcher) {
             try {
@@ -41,14 +44,18 @@ class PokemonListPagingSource(
                     pageSize.toLong()
                 ).awaitAsList().map { it.toPokemonItemModel() }
 
+                if (pokemons.isEmpty()) {
+                    Napier.e { "pokemon list is empty" }
+                    return@withContext LoadResult.Error(NullPointerException())
+                }
+
                 val lastId = pokemonsQueries.getLastID().awaitAsOne().lastIndex
                 val prevKey = (nextPageNumber - 1).takeIf { nextPageNumber != 0 }
-                val nextKey =
-                    (nextPageNumber + 1).takeIf { lastId != null && pokemons.isNotEmpty() && pokemons.last().id < lastId }
+                val nextKey = (nextPageNumber + 1).takeIf { lastId != null && pokemons.last().id < lastId }
 
-                Napier.d { "lastId - $lastId" }
-                Napier.d { "prevKey - $prevKey" }
-                Napier.d { "nextKey - $nextKey" }
+                Napier.e { "lastId - $lastId" }
+                Napier.e { "prevKey - $prevKey" }
+                Napier.e { "nextKey - $nextKey" }
 
                 LoadResult.Page(
                     data = pokemons,
@@ -56,7 +63,7 @@ class PokemonListPagingSource(
                     nextKey = nextKey,
                 )
             } catch (exception: Exception) {
-                Napier.d(throwable = exception, message = "exception when loading from database")
+                Napier.e(throwable = exception, message = "exception when loading from database")
                 LoadResult.Error(exception)
             }
         }
