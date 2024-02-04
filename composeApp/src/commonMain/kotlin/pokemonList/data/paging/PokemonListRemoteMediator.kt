@@ -1,6 +1,6 @@
 package pokemonList.data.paging
 
-import androidx.paging.*
+import app.cash.paging.*
 import core.domain.Resource
 import core.domain.tryGetData
 import io.github.aakira.napier.Napier
