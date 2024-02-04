@@ -1,13 +1,13 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
-import androidx.lifecycle.LifecycleRegistry
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.resume
 import com.arkivanov.essenty.lifecycle.stop
-import core.configs.PokemonRootComponent
 import core.di.initKoin
-import web.dom.document
+import core.ui.navigation.PokemonRootComponent
+import kotlinx.browser.document
+import org.w3c.dom.Document
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {

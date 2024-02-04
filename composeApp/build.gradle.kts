@@ -137,6 +137,7 @@ kotlin {
             api(libs.viewmodel.compose)
         }
         jsMain.dependencies {
+            // For network loading
             implementation(libs.ktor.client.js)
         }
     }

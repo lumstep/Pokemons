@@ -9,7 +9,9 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import org.lumstep.PokemonsQueries
@@ -36,7 +38,7 @@ val htpClientModule = module {
 
 val databaseModule = module {
     single {
-        runBlocking {
+        CoroutineScope(Dispatchers.Default).launch {
             provideDatabaseDriver(PokemonsDatabase.Schema)
         }
     }

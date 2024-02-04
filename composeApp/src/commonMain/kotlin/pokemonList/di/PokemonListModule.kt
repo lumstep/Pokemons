@@ -1,12 +1,9 @@
 package pokemonList.di
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.InvalidatingPagingSourceFactory
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.RemoteMediator
+import app.cash.paging.ExperimentalPagingApi
+import app.cash.paging.Pager
+import app.cash.paging.RemoteMediator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import org.koin.core.KoinApplication
 import org.koin.dsl.bind
 import org.koin.dsl.module

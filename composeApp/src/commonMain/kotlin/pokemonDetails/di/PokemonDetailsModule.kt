@@ -1,7 +1,6 @@
 package pokemonDetails.di
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import org.koin.core.KoinApplication
 import org.koin.dsl.bind
 import org.koin.dsl.module
