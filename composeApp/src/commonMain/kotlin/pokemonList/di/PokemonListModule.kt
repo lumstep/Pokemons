@@ -1,10 +1,8 @@
+@file:OptIn(ExperimentalPagingApi::class)
+
 package pokemonList.di
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.InvalidatingPagingSourceFactory
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.RemoteMediator
+import app.cash.paging.*
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.KoinApplication
 import org.koin.dsl.bind
@@ -27,7 +25,6 @@ private const val PAGE_SIZE = 20
 val KoinApplication.pokemonListModules: KoinApplication
     get() = modules(dataModule, domainModule, presentationModule)
 
-@OptIn(ExperimentalPagingApi::class)
 private val dataModule = module {
     scope<PokemonListScope> {
         scoped { PokemonRepositoryImpl(get(), get(), Dispatchers.IO) } bind PokemonRepository::class
@@ -51,7 +48,6 @@ private val domainModule = module {
     }
 }
 
-@OptIn(ExperimentalPagingApi::class)
 private val presentationModule = module {
     scope<PokemonListScope> {
         scoped {
