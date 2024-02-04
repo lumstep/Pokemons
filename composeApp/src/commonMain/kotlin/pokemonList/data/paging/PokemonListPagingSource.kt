@@ -2,35 +2,70 @@ package pokemonList.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import app.cash.sqldelight.async.coroutines.awaitAsList
+import app.cash.sqldelight.async.coroutines.awaitAsOne
+import io.github.aakira.napier.Napier
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
+import org.lumstep.PokemonsQueries
+import pokemonDetails.data.mapper.toPokemonItemModel
 import pokemonList.domain.PokemonItemModel
 
-val localCache = mutableMapOf<Int, List<PokemonItemModel>>()
+class PokemonListPagingSource(
+    private val pokemonsQueries: PokemonsQueries,
+    private val pageSize: Int,
+    private val dispatcher: CoroutineDispatcher,
+) : PagingSource<Int, PokemonItemModel>() {
 
-//TODO The local database should be here
-class PokemonListPagingSource : PagingSource<Int, PokemonItemModel>() {
+    init {
+        Napier.e { "Init new paging source" }
+        registerInvalidatedCallback {
+            Napier.e { "invalidate paging source" }
+        }
+    }
 
     override fun getRefreshKey(state: PagingState<Int, PokemonItemModel>): Int? {
-        // Try to find the page key of the closest page to anchorPosition from
-        // either the prevKey or the nextKey; you need to handle nullability
-        // here.
-        //  * prevKey == null -> anchorPage is the first page.
-        //  * nextKey == null -> anchorPage is the last page.
-        //  * both prevKey and nextKey are null -> anchorPage is the
-        //    initial page, so return null.
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        Napier.e { " get refresh key - $state" }
+        val lastPage = state.pages.lastOrNull()
+        val key = lastPage?.nextKey ?: lastPage?.prevKey?.let { it + 2 } ?: 0
+        return key.also {
+            Napier.e { "refresh key - $it" }
         }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonItemModel> {
         val nextPageNumber = params.key ?: 0
-        return localCache[nextPageNumber]?.let { cache ->
-            LoadResult.Page(
-                data = cache,
-                prevKey = (nextPageNumber - 1).takeIf { localCache.containsKey(nextPageNumber - 1) },
-                nextKey = (nextPageNumber + 1).takeIf { localCache.containsKey(nextPageNumber + 1) },
-            )
-        } ?: LoadResult.Error(Throwable())
+        Napier.e { "nextPageNumber - $nextPageNumber" }
+
+        return withContext(dispatcher) {
+            try {
+                val pokemons = pokemonsQueries.getPokemons(
+                    (pageSize * nextPageNumber).toLong(),
+                    pageSize.toLong()
+                ).awaitAsList().map { it.toPokemonItemModel() }
+
+                if (pokemons.isEmpty()) {
+                    Napier.e { "pokemon list is empty" }
+                    return@withContext LoadResult.Error(NullPointerException())
+                }
+
+                val lastId = pokemonsQueries.getLastID().awaitAsOne().lastIndex
+                val prevKey = (nextPageNumber - 1).takeIf { nextPageNumber != 0 }
+                val nextKey = (nextPageNumber + 1).takeIf { lastId != null && pokemons.last().id < lastId }
+
+                Napier.e { "lastId - $lastId" }
+                Napier.e { "prevKey - $prevKey" }
+                Napier.e { "nextKey - $nextKey" }
+
+                LoadResult.Page(
+                    data = pokemons,
+                    prevKey = prevKey,
+                    nextKey = nextKey,
+                )
+            } catch (exception: Exception) {
+                Napier.e(throwable = exception, message = "exception when loading from database")
+                LoadResult.Error(exception)
+            }
+        }
     }
 }

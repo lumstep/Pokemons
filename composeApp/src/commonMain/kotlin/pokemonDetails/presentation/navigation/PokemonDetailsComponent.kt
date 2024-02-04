@@ -2,14 +2,14 @@ package pokemonDetails.presentation.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
-import core.configs.PokemonRootComponent
+import core.ui.navigation.PokemonRootComponent
+import core.ui.snackbar.ErrorSnackbarHost
+import core.ui.viewModel.koinKmpViewModel
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.component.KoinComponent
 import pokemonDetails.di.PokemonDetailsScope
@@ -23,31 +23,47 @@ class PokemonDetailsComponent(
     private val navigateBack: () -> Unit,
 ) : ComponentContext by componentContext, KoinComponent, PokemonRootComponent.Child {
 
-    private val scope = PokemonDetailsScope().scope
-    private val viewModel: PokemonDetailsViewModel by scope.inject()
-
     @Composable
     override fun View(modifier: Modifier) {
 
+        val viewModel: PokemonDetailsViewModel = koinKmpViewModel { PokemonDetailsScope() }
+
         val state by viewModel.state.collectAsState()
+        val snackbarHostState = remember { SnackbarHostState() }
 
         LaunchedEffect(Unit) {
             viewModel.initPokemon(id = pokemonId)
 
             viewModel.effects.collectLatest { effect ->
                 when (effect) {
-                    PokemonDetailsEffects.NavigateBack -> navigateBack()
+                    is PokemonDetailsEffects.NavigateBack -> navigateBack()
+                    is PokemonDetailsEffects.Error -> {
+                        val result = snackbarHostState.showSnackbar(
+                            message = effect.message,
+                            duration = SnackbarDuration.Short,
+                            withDismissAction = true,
+                            actionLabel = "Retry",
+                        )
+                        if (result == SnackbarResult.ActionPerformed) {
+                            Napier.d { "ActionPerformed" }
+                            effect.retry.invoke()
+                        }
+                    }
                 }
             }
         }
 
-        state?.let {
+        Scaffold(
+            snackbarHost = {
+                ErrorSnackbarHost(hostState = snackbarHostState)
+            }
+        ) {
             PokemonDetailsScreen(
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.primaryContainer),
-                onEvent = viewModel::handleEvent,
-                state = it,
+                sendEvent = viewModel::handleEvent,
+                state = state,
             )
         }
     }

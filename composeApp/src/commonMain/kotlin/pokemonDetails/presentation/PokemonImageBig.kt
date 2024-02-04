@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
-import core.imageLoading.ImageLoader
+import core.ui.imageLoading.ImageLoader
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
@@ -46,7 +46,6 @@ fun PokemonImageBig(
     Box(
         modifier = modifier
             .aspectRatio(1.0f)
-            .padding(horizontal = 20.dp)
             .drawBehind {
                 drawCircle(
                     Brush.radialGradient(
@@ -57,9 +56,18 @@ fun PokemonImageBig(
                 )
             },
     ) {
-        ImageLoader(data = url, onLoading = null)
         ImageLoader(
-            modifier = Modifier.alpha(alpha),
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .aspectRatio(1.0f),
+            data = url,
+            onLoading = null
+        )
+        ImageLoader(
+            modifier = Modifier
+                .alpha(alpha)
+                .padding(horizontal = 20.dp)
+                .aspectRatio(1.0f),
             data = shinyUrl,
             onLoading = null,
         )

@@ -1,4 +1,4 @@
-package core.configs
+package core.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -39,7 +39,7 @@ class PokemonRootComponent(
 
             is Configuration.PokemonList -> PokemonListComponent(
                 componentContext = context,
-                onNavigateToPokemonDetails = { pokemonId: Int ->
+                navigateToPokemonDetails = { pokemonId: Int ->
                     navigation.pushNew(Configuration.PokemonDetails(pokemonId = pokemonId))
                 },
             )

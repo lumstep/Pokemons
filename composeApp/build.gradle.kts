@@ -7,6 +7,16 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.sqldelight)
+}
+
+sqldelight {
+    databases {
+        create("PokemonsDatabase") {
+            packageName.set("org.lumstep")
+            generateAsync.set(true)
+        }
+    }
 }
 
 kotlin {
@@ -30,6 +40,15 @@ kotlin {
     }
 
     jvm("desktop")
+
+    /*  ios {
+          binaries {
+              framework {
+                  baseName = "shared"
+                  export(libs.viewmodel) // required to expose the classes to iOS.
+              }
+          }
+      }*/
 
     listOf(
         iosX64(),
@@ -55,6 +74,12 @@ kotlin {
 
             // For dependency injection
             implementation(libs.koin.android)
+
+            // For database
+            implementation(libs.sqldelight.android.driver)
+
+            // For lottie
+            implementation(libs.lottie)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -64,16 +89,22 @@ kotlin {
 
             // For coroutines
             implementation(libs.kotlinx.coroutines.swing)
+
+            // For database
+            implementation(libs.sqldelight.sqlite.driver)
         }
         iosMain.dependencies {
             // For network loading
             implementation(libs.ktor.client.darwin)
+
+            // For database
+            implementation(libs.sqldelight.native.driver)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
-            @OptIn(ExperimentalComposeLibrary::class)
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
 
             // For loading images
@@ -104,6 +135,15 @@ kotlin {
 
             // For dependency injection
             implementation(libs.koin.core)
+
+            // For viewmodels
+            /*
+            api is used according to the documentation
+            https://hoc081098.github.io/kmp-viewmodel/docs/0.x/viewmodel/
+            https://hoc081098.github.io/kmp-viewmodel/docs/0.x/viewmodel-compose/
+             */
+            api(libs.viewmodel)
+            api(libs.viewmodel.compose)
         }
     }
 }
@@ -153,7 +193,6 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "org.lumstep.pokemons"
             packageVersion = "1.0.0"
         }

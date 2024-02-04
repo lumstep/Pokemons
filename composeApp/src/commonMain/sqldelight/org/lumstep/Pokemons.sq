@@ -1,0 +1,25 @@
+CREATE TABLE pokemon (
+  id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  type TEXT,
+  weight INTEGER,
+  height INTEGER,
+  experience INTEGER,
+  home_avatar TEXT,
+  home_shiny_avatar TEXT,
+  art_work_avatar TEXT,
+  art_work_shiny_avatar TEXT
+);
+
+insertPokemon:
+INSERT OR REPLACE INTO pokemon (id, name, type, weight, height, experience, home_avatar, home_shiny_avatar, art_work_avatar, art_work_shiny_avatar)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+getPokemons:
+SELECT * FROM pokemon WHERE id > ? ORDER BY id LIMIT ?;
+
+getPokemon:
+SELECT * FROM pokemon WHERE id = ?;
+
+getLastID:
+SELECT MAX(id) AS lastIndex FROM pokemon;

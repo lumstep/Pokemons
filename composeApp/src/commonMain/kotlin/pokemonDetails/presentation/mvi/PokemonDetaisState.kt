@@ -1,6 +1,7 @@
 package pokemonDetails.presentation.mvi
 
 data class PokemonDetailsState(
+    val isLoading: Boolean,
     val avatar: String,
     val shinyAvatar: String,
     val selectedAvatarType: AvatarTypes,

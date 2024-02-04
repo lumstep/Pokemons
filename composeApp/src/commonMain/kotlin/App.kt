@@ -6,8 +6,8 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slid
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import core.configs.InitialConfigsProvider
-import core.configs.PokemonRootComponent
-import core.theme.PokemonTheme
+import core.ui.navigation.PokemonRootComponent
+import core.ui.theme.PokemonTheme
 
 @Composable
 fun App(

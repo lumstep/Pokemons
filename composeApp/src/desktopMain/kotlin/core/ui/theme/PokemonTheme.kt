@@ -1,10 +1,10 @@
-package core.theme
+package core.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import core.style.DarkColorScheme
-import core.style.LightColorScheme
-import core.style.PokemonTypography
+import core.ui.style.DarkColorScheme
+import core.ui.style.LightColorScheme
+import core.ui.style.PokemonTypography
 
 @Composable
 actual fun PokemonTheme(
@@ -13,7 +13,7 @@ actual fun PokemonTheme(
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+        colorScheme = if(darkTheme) DarkColorScheme else LightColorScheme,
         typography = PokemonTypography,
         content = content
     )

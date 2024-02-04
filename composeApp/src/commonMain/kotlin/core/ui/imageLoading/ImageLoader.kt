@@ -1,4 +1,4 @@
-package core.imageLoading
+package core.ui.imageLoading
 
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material3.CircularProgressIndicator
