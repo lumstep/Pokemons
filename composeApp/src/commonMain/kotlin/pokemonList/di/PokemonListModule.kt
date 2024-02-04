@@ -25,21 +25,22 @@ private const val PAGE_SIZE = 20
 val KoinApplication.pokemonListModules: KoinApplication
     get() = modules(dataModule, domainModule, presentationModule)
 
+@OptIn(ExperimentalPagingApi::class)
 private val dataModule = module {
     scope<PokemonListScope> {
-        scoped { PokemonRepositoryImpl(get(), get(), Dispatchers.IO) } bind PokemonRepository::class
+        scoped { PokemonRepositoryImpl(get(), get(), Dispatchers.Default) } bind PokemonRepository::class
         scoped { PokemonInfoApiImpl(get()) } bind PokemonInfoApi::class
         scoped { PokemonListApiImpl(get()) } bind PokemonListApi::class
         scoped {
             InvalidatingPagingSourceFactory {
-                PokemonListPagingSource(get(), PAGE_SIZE, Dispatchers.IO)
+                PokemonListPagingSource(get(), PAGE_SIZE, Dispatchers.Default)
             }
         } bind InvalidatingPagingSourceFactory::class
         scoped {
-            PokemonListCacherImpl(get(), Dispatchers.IO)
+            PokemonListCacherImpl(get(), Dispatchers.Default)
         } bind PokemonListCacher::class
 
-        scoped { PokemonListRemoteMediator(get(), get(), get(), get(), Dispatchers.IO) } bind RemoteMediator::class
+        scoped { PokemonListRemoteMediator(get(), get(), get(), get(), Dispatchers.Default) } bind RemoteMediator::class
     }
 }
 

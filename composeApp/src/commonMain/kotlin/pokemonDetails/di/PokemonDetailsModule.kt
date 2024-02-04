@@ -15,7 +15,7 @@ val KoinApplication.pokemonDetailsModules: KoinApplication
 
 private val dataModule = module {
     scope<PokemonDetailsScope> {
-        scoped { PokemonRepositoryImpl(get(), get (), Dispatchers.IO) } bind PokemonRepository::class
+        scoped { PokemonRepositoryImpl(get(), get (), Dispatchers.Default) } bind PokemonRepository::class
         scoped { PokemonInfoApiImpl(get()) } bind PokemonInfoApi::class
     }
 }
