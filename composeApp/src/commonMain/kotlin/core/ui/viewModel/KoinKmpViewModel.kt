@@ -7,7 +7,6 @@ import com.hoc081098.kmp.viewmodel.compose.defaultPlatformCreationExtras
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import org.koin.core.component.KoinScopeComponent
 
-
 @MainThread
 @Composable
 inline fun <reified VM : ViewModel> koinKmpViewModel(

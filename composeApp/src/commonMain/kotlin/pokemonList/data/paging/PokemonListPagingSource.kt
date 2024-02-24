@@ -1,7 +1,6 @@
 package pokemonList.data.paging
 
-import app.cash.paging.PagingSource
-import app.cash.paging.PagingState
+import app.cash.paging.*
 import app.cash.sqldelight.async.coroutines.awaitAsList
 import app.cash.sqldelight.async.coroutines.awaitAsOne
 import io.github.aakira.napier.Napier
@@ -33,7 +32,7 @@ class PokemonListPagingSource(
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonItemModel> {
+    override suspend fun load(params: PagingSourceLoadParams<Int>): PagingSourceLoadResult<Int, PokemonItemModel> {
         val nextPageNumber = params.key ?: 0
         Napier.e { "nextPageNumber - $nextPageNumber" }
 
@@ -46,7 +45,7 @@ class PokemonListPagingSource(
 
                 if (pokemons.isEmpty()) {
                     Napier.e { "pokemon list is empty" }
-                    return@withContext LoadResult.Error(NullPointerException())
+                    return@withContext PagingSourceLoadResultError<Int, PokemonItemModel>(NullPointerException()) as PagingSourceLoadResult<Int, PokemonItemModel>
                 }
 
                 val lastId = pokemonsQueries.getLastID().awaitAsOne().lastIndex
@@ -57,14 +56,14 @@ class PokemonListPagingSource(
                 Napier.e { "prevKey - $prevKey" }
                 Napier.e { "nextKey - $nextKey" }
 
-                LoadResult.Page(
+                PagingSourceLoadResultPage(
                     data = pokemons,
                     prevKey = prevKey,
                     nextKey = nextKey,
-                )
+                ) as PagingSourceLoadResult<Int, PokemonItemModel>
             } catch (exception: Exception) {
                 Napier.e(throwable = exception, message = "exception when loading from database")
-                LoadResult.Error(exception)
+                PagingSourceLoadResultError<Int, PokemonItemModel>(exception) as PagingSourceLoadResult<Int, PokemonItemModel>
             }
         }
     }

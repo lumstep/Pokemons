@@ -1,19 +1,17 @@
 package core.di
 
-import org.lumstep.PokemonsDatabase
+import app.cash.sqldelight.db.SqlDriver
+import com.javiersc.kotlinx.coroutines.run.blocking.runBlocking
 import core.configs.httpClientProvider
 import core.database.provideDatabaseDriver
-import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.header
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
+import org.lumstep.PokemonsDatabase
 import org.lumstep.PokemonsQueries
 
 val htpClientModule = module {
@@ -37,11 +35,10 @@ val htpClientModule = module {
 }
 
 val databaseModule = module {
-    single {
-        CoroutineScope(Dispatchers.Default).launch {
+    single<SqlDriver> {
+        runBlocking<SqlDriver> {
             provideDatabaseDriver(PokemonsDatabase.Schema)
         }
     }
-
     single { PokemonsQueries(get()) }
 }

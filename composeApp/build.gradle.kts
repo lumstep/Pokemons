@@ -19,6 +19,7 @@ kotlin {
     js {
         browser()
         binaries.executable()
+        useCommonJs()
     }
 
     androidTarget {
@@ -54,6 +55,53 @@ kotlin {
     sourceSets {
         val desktopMain by getting
 
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.components.resources)
+
+            // For loading images
+            implementation(libs.coil3.compose)
+            implementation(libs.coil3.network.ktor)
+
+            // For network loading
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.encoding)
+
+            // For serialization
+            implementation(libs.kotlinx.serialization)
+
+            // For pagination
+            implementation(libs.paging.compose)
+            implementation(libs.paging.common)
+
+            // For logging
+            implementation(libs.logging)
+
+            // For coroutines
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.coroutines.runBlocking)
+
+            // For compose navigation
+            implementation(libs.decompose)
+            implementation(libs.decompose.jetbrains)
+
+            // For dependency injection
+            implementation(libs.koin.core)
+
+            // For viewmodels
+            /*
+            api is used according to the documentation
+            https://hoc081098.github.io/kmp-viewmodel/docs/0.x/viewmodel/
+            https://hoc081098.github.io/kmp-viewmodel/docs/0.x/viewmodel-compose/
+             */
+            api(libs.viewmodel)
+            api(libs.viewmodel.compose)
+        }
         androidMain.dependencies {
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
@@ -90,61 +138,18 @@ kotlin {
             // For database
             implementation(libs.sqldelight.native.driver)
         }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.components.resources)
-
-            // For loading images
-            implementation(libs.coil3.compose)
-            implementation(libs.coil3.network.ktor)
-
-            // For network loading
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            implementation(libs.ktor.client.encoding)
-
-            // For serialization
-            implementation(libs.kotlinx.serialization)
-
-            // For pagination
-            implementation(libs.paging.compose)
-            implementation(libs.paging.common)
-
-            // For logging
-            implementation(libs.logging)
-
-            // For coroutines
-            implementation(libs.kotlinx.coroutines.core)
-
-            // For compose navigation
-            implementation(libs.decompose)
-            implementation(libs.decompose.jetbrains)
-
-            // For dependency injection
-            implementation(libs.koin.core)
-
-            // For viewmodels
-            /*
-            api is used according to the documentation
-            https://hoc081098.github.io/kmp-viewmodel/docs/0.x/viewmodel/
-            https://hoc081098.github.io/kmp-viewmodel/docs/0.x/viewmodel-compose/
-             */
-            api(libs.viewmodel)
-            api(libs.viewmodel.compose)
-        }
         jsMain.dependencies {
             // For network loading
             implementation(libs.ktor.client.js)
 
             // For database
             implementation(libs.sqldelight.sqljs.driver)
-            implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+            implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.0.1"))
+            implementation(npm("sql.js", "1.8.0"))
+            implementation(npm("copy-webpack-plugin", "9.1.0"))
 
-            
+            implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.11.0")
+            implementation(npm("dateformat", "3.0.3"))
         }
     }
 }

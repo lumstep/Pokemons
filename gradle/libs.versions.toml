@@ -1,7 +1,7 @@
 [versions]
-compose = "1.6.0"
-compose-plugin = "1.6.0-dev1405"
-compose-compiler = "1.5.8"
+compose = "1.6.1"
+compose-plugin = "1.6.0-rc03"
+compose-compiler = "1.5.10"
 agp = "8.2.2"
 android-minSdk = "24"
 android-compileSdk = "34"
@@ -13,7 +13,8 @@ ktor-client = "2.3.7"
 serialization-version = "1.6.2"
 app-cash-paging = "3.3.0-alpha02-0.4.0"
 logging = "2.7.1"
-coroutines = "1.8.0-RC2"
+coroutines = "1.8.0"
+coroutines-runBlocking = "0.1.0-rc.1"
 koin = "3.5.3"
 decompose = "2.2.2-compose-experimental"
 sqldelight = "2.0.1"
@@ -47,6 +48,7 @@ logging = { module = "io.github.aakira:napier", version.ref = "logging" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
+kotlinx-coroutines-runBlocking = { module = "com.javiersc.kotlinx:coroutines-run-blocking-all", version.ref = "coroutines-runBlocking" }
 
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-jetbrains = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }

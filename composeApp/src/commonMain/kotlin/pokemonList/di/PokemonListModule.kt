@@ -3,6 +3,7 @@
 package pokemonList.di
 
 import app.cash.paging.*
+import core.paging.InvalidatingPagingSourceFactory
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.KoinApplication
 import org.koin.dsl.bind
@@ -25,7 +26,7 @@ private const val PAGE_SIZE = 20
 val KoinApplication.pokemonListModules: KoinApplication
     get() = modules(dataModule, domainModule, presentationModule)
 
-@OptIn(ExperimentalPagingApi::class)
+@ExperimentalPagingApi
 private val dataModule = module {
     scope<PokemonListScope> {
         scoped { PokemonRepositoryImpl(get(), get(), Dispatchers.Default) } bind PokemonRepository::class
@@ -49,6 +50,7 @@ private val domainModule = module {
     }
 }
 
+@ExperimentalPagingApi
 private val presentationModule = module {
     scope<PokemonListScope> {
         scoped {
@@ -57,12 +59,16 @@ private val presentationModule = module {
                 initialLoadSize = PAGE_SIZE * 3,
                 enablePlaceholders = true,
                 maxSize = PAGE_SIZE * 5,
+                jumpThreshold = COUNT_UNDEFINED,
+                prefetchDistance = PAGE_SIZE * 2,
             )
         }
         scoped {
-            Pager(
+            val factory = get<InvalidatingPagingSourceFactory<Int, PokemonItemModel>>()
+            createPager(
                 config = get(),
-                pagingSourceFactory = get<InvalidatingPagingSourceFactory<Int, PokemonItemModel>>(),
+                initialKey = null,
+                pagingSourceFactory = { factory() },
                 remoteMediator = get<RemoteMediator<Int, PokemonItemModel>>(),
             )
         }
